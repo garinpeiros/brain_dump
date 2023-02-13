@@ -1,11 +1,17 @@
+import 'dart:math';
+
+import 'package:brain_dump/config/category_config.dart';
 import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/model/freezed/dorama_model.dart';
 import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
-  DoramaDatabseNotifier() : super(DoramaStateData());
+  DoramaDatabseNotifier() : super(DoramaStateData(doramaItems: [])) {
+    fetchList();
+  }
 
+  static const _addCount = 20;
   final _db = MyDatabase();
 
   ///
@@ -53,17 +59,50 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
   readData() async {
     state = state.copyWith(isLoading: true);
     final items = await _db.readAllDorama();
-
     state = state.copyWith(
       isLoading: false,
       isReadyData: true,
       doramaItems: items,
     );
   }
+
+  Future<void> fetchList() async {
+    state = state.copyWith(isLoading: true);
+    final items = await fetchNextDummyList();
+    state = state.copyWith(
+      isLoading: false,
+      isReadyData: true,
+      doramaItems: items,
+    );
+  }
+
+  ///
+  /// ダミーデータ生成
+  ///
+  Future<List<DoramaData>> fetchNextDummyList() async =>
+      Future.delayed(const Duration(seconds: 2), () {
+        final items = <DoramaData>[];
+        for (var i = 0; i < _addCount; i++) {
+          final id = state.doramaItems.length + i + 1;
+          items.add(DoramaData(
+            id: id,
+            title: 'Item no. $id',
+            categoryId: Random().nextInt(doramaCategoryItems.length) + 1,
+            createdAt: DateTime.now().millisecondsSinceEpoch,
+            updatedAt: DateTime.now().millisecondsSinceEpoch,
+          ));
+        }
+        //spread記法
+        return [...state.doramaItems, ...items];
+      });
 }
 
+/*
 final doramaDatabaseProvider = StateNotifierProvider((_) {
   DoramaDatabseNotifier notify = DoramaDatabseNotifier();
   notify.readData();
   return notify;
 });
+*/
+final doramaDatabaseProvider =
+    StateNotifierProvider((ref) => DoramaDatabseNotifier());

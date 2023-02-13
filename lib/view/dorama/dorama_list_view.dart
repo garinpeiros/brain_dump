@@ -9,7 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DoramaListView extends HookConsumerWidget {
-  const DoramaListView({super.key});
+  DoramaListView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,8 +33,33 @@ class DoramaListView extends HookConsumerWidget {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: _buildList(items: items, provider: doramaProvider),
+      body: _scrollView(
+        items: items,
+        provider: doramaProvider,
+        context: context,
+      ),
       floatingActionButton: _addButton(context),
+    );
+  }
+
+  Widget _scrollView({
+    required List<DoramaData> items,
+    required DoramaDatabseNotifier provider,
+    required BuildContext context,
+  }) {
+    const threshold = 0.7;
+    return NotificationListener<ScrollNotification>(
+      onNotification: (ScrollNotification scrollInfo) {
+        final scrollProportion =
+            scrollInfo.metrics.pixels / scrollInfo.metrics.maxScrollExtent;
+        if (!provider.state.isLoading && scrollProportion > threshold) {
+          provider.fetchList();
+        } else {
+          _showLoadingSnackBar(context);
+        }
+        return false;
+      },
+      child: _buildList(items: items, provider: provider),
     );
   }
 
@@ -73,5 +98,13 @@ class DoramaListView extends HookConsumerWidget {
         );
       },
     );
+  }
+
+  void _showLoadingSnackBar(BuildContext context) {
+    const snackBar = SnackBar(
+      content: Text('Loading'),
+      duration: Duration(seconds: 1),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
