@@ -21,5 +21,6 @@
   "confirm_delete_dorama": "本当に削除しても宜しいでしょうか？",
   "edit_dorama": "ドラマを編集",
   "add_dorama": "ドラマを追加",
-  "alert_title": "タイトルを入力して下さい"
+  "alert_title": "タイトルを入力して下さい",
+  "loading": "読み込み中"
 }

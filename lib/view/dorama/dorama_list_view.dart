@@ -16,7 +16,16 @@ class DoramaListView extends HookConsumerWidget {
     final doramaState = ref.watch(doramaDatabaseProvider);
     final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
     List<DoramaData> items = doramaProvider.state.doramaItems;
-    //return Container();
+
+    ///
+    /// Loading表示
+    ///
+    if (doramaProvider.state.isLoading) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showLoadingSnackBar(context);
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(
@@ -47,15 +56,14 @@ class DoramaListView extends HookConsumerWidget {
     required DoramaDatabseNotifier provider,
     required BuildContext context,
   }) {
-    const threshold = 0.7;
+    const threshold = 0.9;
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
         final scrollProportion =
             scrollInfo.metrics.pixels / scrollInfo.metrics.maxScrollExtent;
         if (!provider.state.isLoading && scrollProportion > threshold) {
+          print(scrollProportion);
           provider.fetchList();
-        } else {
-          _showLoadingSnackBar(context);
         }
         return false;
       },
@@ -101,9 +109,9 @@ class DoramaListView extends HookConsumerWidget {
   }
 
   void _showLoadingSnackBar(BuildContext context) {
-    const snackBar = SnackBar(
-      content: Text('Loading'),
-      duration: Duration(seconds: 1),
+    var snackBar = SnackBar(
+      content: Text("loading".tr()),
+      duration: const Duration(seconds: 1),
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
