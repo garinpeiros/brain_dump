@@ -110,9 +110,12 @@ class DoramaListView extends HookConsumerWidget {
 
   void _showLoadingSnackBar(BuildContext context) {
     var snackBar = SnackBar(
-      content: Text("loading".tr()),
-      duration: const Duration(seconds: 1),
-    );
+        content: Container(
+          height: 50,
+          alignment: Alignment.center,
+          child: Text("loading".tr()),
+        ),
+        duration: const Duration(seconds: 1));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }
