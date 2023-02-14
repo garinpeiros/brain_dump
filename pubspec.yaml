@@ -74,7 +74,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  fonts:
+    - family: NotoSerifJP-Regular
+      fonts:
+        - asset: assets/fonts/NotoSerifJP-Regular.otf
+    - family: NotoSerifJP-SemiBold
+      fonts:
+        - asset: assets/fonts/NotoSerifJP-SemiBold.otf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
