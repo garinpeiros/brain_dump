@@ -75,6 +75,9 @@ class MyDatabase extends _$MyDatabase {
   Future deleteDrama(int id) =>
       (delete(dorama)..where((tbl) => tbl.id.equals(id))).go();
 
+  //全削除(ドラマ)
+  Future deleteAllDorama() => delete(dorama).go();
+
   //全てのメモデータを取得
   Future<List<MemoData>> readAllMemo() => select(memo).get();
 

@@ -44,9 +44,14 @@ class DoramaTileWidget extends StatelessWidget {
             ),
           ),
         ),
-        onTap: () => _action(context),
+        onTap: () => {},
         title: Text(data.title),
-        trailing: const Icon(Icons.more_horiz),
+        //trailing: const Icon(Icons.more_horiz),
+        trailing: GestureDetector(
+          onTap: () => _action(context),
+          behavior: HitTestBehavior.opaque,
+          child: const Icon(Icons.more_horiz),
+        ),
       ),
     );
   }
@@ -56,10 +61,12 @@ class DoramaTileWidget extends StatelessWidget {
       context: context,
       position: _getPosition(context),
       items: <PopupMenuItem<String>>[
+        /*
         PopupMenuItem<String>(
           value: 'card',
           child: Text("card_list".tr()),
         ),
+        */
         PopupMenuItem<String>(
           value: 'edit',
           child: Text("edit".tr()),
@@ -72,8 +79,7 @@ class DoramaTileWidget extends StatelessWidget {
       elevation: 8.0,
     );
 
-    if (result == 'card') {
-    } else if (result == 'edit') {
+    if (result == 'edit') {
       await Navigator.push(
         context,
         MaterialPageRoute(

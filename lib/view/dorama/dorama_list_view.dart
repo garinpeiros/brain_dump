@@ -1,5 +1,3 @@
-import 'package:brain_dump/model/db/db.dart';
-import 'package:brain_dump/view/dorama/dorama_form_view.dart';
 import 'package:brain_dump/view/dorama/widget/dorama_tile_widget.dart';
 import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -8,23 +6,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class DoramaListView extends HookConsumerWidget {
-  DoramaListView({super.key});
+import '../../model/db/db.dart';
+import 'dorama_form_view.dart';
+
+class DoramaListView extends ConsumerStatefulWidget {
+  const DoramaListView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final doramaState = ref.watch(doramaDatabaseProvider);
-    final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
-    List<DoramaData> items = doramaProvider.state.doramaItems;
+  ConsumerState<ConsumerStatefulWidget> createState() => _DoramaListViewState();
+}
 
-    ///
-    /// Loading表示
-    ///
-    if (doramaProvider.state.isLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+class _DoramaListViewState extends ConsumerState<DoramaListView> {
+  final ScrollController _listScrollController = ScrollController();
+
+  @override
+  void initState() {
+    _listScrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  void _scrollListener() {
+    final provider = ref.read(doramaDatabaseProvider.notifier);
+    if (provider.state.isLoading == false && provider.state.hasNext == true) {
+      if (_listScrollController.offset >=
+              _listScrollController.position.maxScrollExtent &&
+          !_listScrollController.position.outOfRange) {
         _showLoadingSnackBar(context);
-      });
+        provider.fetchData();
+      }
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(doramaDatabaseProvider);
+    final provider = ref.watch(doramaDatabaseProvider.notifier);
+    List<DoramaData> items = provider.state.doramaItems;
 
     return Scaffold(
       appBar: AppBar(
@@ -42,32 +59,8 @@ class DoramaListView extends HookConsumerWidget {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: _scrollView(
-        items: items,
-        provider: doramaProvider,
-        context: context,
-      ),
+      body: _buildList(items: items, provider: provider),
       floatingActionButton: _addButton(context),
-    );
-  }
-
-  Widget _scrollView({
-    required List<DoramaData> items,
-    required DoramaDatabseNotifier provider,
-    required BuildContext context,
-  }) {
-    const threshold = 0.9;
-    return NotificationListener<ScrollNotification>(
-      onNotification: (ScrollNotification scrollInfo) {
-        final scrollProportion =
-            scrollInfo.metrics.pixels / scrollInfo.metrics.maxScrollExtent;
-        if (!provider.state.isLoading && scrollProportion > threshold) {
-          //provider.fetchList();
-          provider.fetchData();
-        }
-        return false;
-      },
-      child: _buildList(items: items, provider: provider),
     );
   }
 
@@ -78,6 +71,7 @@ class DoramaListView extends HookConsumerWidget {
     if (items.isEmpty) return _emptyView();
 
     return ListView.builder(
+      controller: _listScrollController,
       itemCount: items.length,
       itemBuilder: (context, index) => DoramaTileWidget(
         data: items[index],

@@ -3,16 +3,19 @@ import 'dart:math';
 import 'package:brain_dump/config/category_config.dart';
 import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/model/freezed/dorama_model.dart';
+import 'package:brain_dump/repository/dorama_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
+  final DoramaRepository _repository = DoramaRepository();
+
   DoramaDatabseNotifier() : super(DoramaStateData(doramaItems: [])) {
     //fetchList();
     fetchData();
   }
 
-  static const _limit = 20;
+  static const _limit = 10;
   final _db = MyDatabase();
   int _page = 0;
 
@@ -30,7 +33,8 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
       updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
     );
     state = state.copyWith(isLoading: true);
-    await _db.writeDorama(entry);
+    //await _db.writeDorama(entry);
+    await _repository.writeData(entry);
     readData();
   }
 
@@ -68,6 +72,7 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
     );
   }
 
+  /*
   Future<void> fetchList() async {
     state = state.copyWith(isLoading: true);
     final items = await fetchNextDummyList();
@@ -77,11 +82,24 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
       doramaItems: items,
     );
   }
+  */
 
-  fetchData() async {
+  ///
+  /// データ全削除
+  ///
+  Future<void> deleteAll() async {
+    _repository.deleteAll();
+    state = state.copyWith(doramaItems: []);
+  }
+
+  Future<void> fetchData() async {
     state = state.copyWith(isLoading: true);
-    final List<DoramaData> items =
-        await _db.fetchDorama(offset: _page * _limit, limit: _limit);
+
+    print(_page * _limit);
+    final List<DoramaData> items = await _repository.fetchData(
+      offset: _page * _limit,
+      limit: _limit,
+    );
     final List<DoramaData> newItems = [...state.doramaItems, ...items];
 
     if (items.length % _limit != 0 || items.isEmpty) {
@@ -99,30 +117,19 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
   ///
   /// ダミーデータ生成
   ///
-  Future<List<DoramaData>> fetchNextDummyList() async =>
-      Future.delayed(const Duration(seconds: 2), () {
-        final items = <DoramaData>[];
-        for (var i = 0; i < _limit; i++) {
-          final id = state.doramaItems.length + i + 1;
-          items.add(DoramaData(
-            id: id,
-            title: 'Item no. $id',
-            categoryId: Random().nextInt(doramaCategoryItems.length) + 1,
-            createdAt: DateTime.now().millisecondsSinceEpoch,
-            updatedAt: DateTime.now().millisecondsSinceEpoch,
-          ));
-        }
-        //spread記法
-        return [...state.doramaItems, ...items];
-      });
+  Future<void> createDummyData() async {
+    for (var i = 0; i < 100; i++) {
+      final item = DoramaCompanion(
+        title: Value('Item no. $i'),
+        categoryId: Value(Random().nextInt(doramaCategoryItems.length) + 1),
+        createdAt: Value(DateTime.now().millisecondsSinceEpoch),
+        updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
+      );
+      await _repository.writeData(item);
+    }
+    fetchData();
+  }
 }
 
-/*
-final doramaDatabaseProvider = StateNotifierProvider((_) {
-  DoramaDatabseNotifier notify = DoramaDatabseNotifier();
-  notify.readData();
-  return notify;
-});
-*/
 final doramaDatabaseProvider =
     StateNotifierProvider((ref) => DoramaDatabseNotifier());

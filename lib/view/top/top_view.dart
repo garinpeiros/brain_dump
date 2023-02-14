@@ -30,11 +30,11 @@ class TopView extends HookConsumerWidget {
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.movie_creation_outlined),
             label: "dorama".tr(),
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.crop_square),
             label: "card".tr(),
           ),
           BottomNavigationBarItem(
