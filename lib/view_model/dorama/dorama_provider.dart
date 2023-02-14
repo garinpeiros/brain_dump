@@ -14,7 +14,7 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
 
   static const _limit = 20;
   final _db = MyDatabase();
-  int _page = 1;
+  int _page = 0;
 
   ///
   /// データの書き込み

@@ -26,14 +26,21 @@ class DoramaTileWidget extends StatelessWidget {
     required BuildContext context,
   }) {
     SelectItemModel? category = ToolUtil.getDoramaCategory(data.categoryId);
+
+    Color color = (category != null) ? category.color : Colors.black;
     return Card(
       child: ListTile(
         leading: Chip(
-          backgroundColor: (category != null) ? category.color : Colors.black,
+          backgroundColor: Colors.transparent,
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: color,
+            ),
+          ),
           label: Text(
             (category != null) ? category.name : '',
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: color,
             ),
           ),
         ),
