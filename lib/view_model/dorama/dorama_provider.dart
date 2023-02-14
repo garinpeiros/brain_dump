@@ -5,13 +5,13 @@ import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/model/freezed/dorama_model.dart';
 import 'package:brain_dump/repository/dorama_repository.dart';
 import 'package:drift/drift.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
   final DoramaRepository _repository = DoramaRepository();
 
   DoramaDatabseNotifier() : super(DoramaStateData(doramaItems: [])) {
-    //fetchList();
     fetchData();
   }
 
@@ -33,9 +33,8 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
       updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
     );
     state = state.copyWith(isLoading: true);
-    //await _db.writeDorama(entry);
     await _repository.writeData(entry);
-    readData();
+    refresh();
   }
 
   ///
@@ -46,8 +45,8 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
       return false;
     }
     state = state.copyWith(isLoading: true);
-    await _db.deleteDrama(data.id);
-    readData();
+    await _repository.delete(data.id);
+    refresh();
   }
 
   ///
@@ -58,31 +57,18 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
       return false;
     }
     state = state.copyWith(isLoading: true);
-    await _db.updateDorama(data);
-    readData();
+    await _repository.update(data);
+    refresh();
   }
 
-  readData() async {
-    state = state.copyWith(isLoading: true);
-    final items = await _db.readAllDorama();
-    state = state.copyWith(
-      isLoading: false,
-      isReadyData: true,
-      doramaItems: items,
-    );
+  ///
+  /// リフレッシュ
+  ///
+  refresh() {
+    state = state.copyWith(doramaItems: []);
+    _page = 0;
+    fetchData();
   }
-
-  /*
-  Future<void> fetchList() async {
-    state = state.copyWith(isLoading: true);
-    final items = await fetchNextDummyList();
-    state = state.copyWith(
-      isLoading: false,
-      isReadyData: true,
-      doramaItems: items,
-    );
-  }
-  */
 
   ///
   /// データ全削除
@@ -92,10 +78,14 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
     state = state.copyWith(doramaItems: []);
   }
 
+  ///
+  /// データ取得
+  ///
   Future<void> fetchData() async {
     state = state.copyWith(isLoading: true);
 
-    print(_page * _limit);
+    debugPrint((_page * _limit).toString());
+
     final List<DoramaData> items = await _repository.fetchData(
       offset: _page * _limit,
       limit: _limit,
