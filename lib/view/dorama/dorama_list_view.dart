@@ -62,8 +62,8 @@ class DoramaListView extends HookConsumerWidget {
         final scrollProportion =
             scrollInfo.metrics.pixels / scrollInfo.metrics.maxScrollExtent;
         if (!provider.state.isLoading && scrollProportion > threshold) {
-          print(scrollProportion);
-          provider.fetchList();
+          //provider.fetchList();
+          provider.fetchData();
         }
         return false;
       },

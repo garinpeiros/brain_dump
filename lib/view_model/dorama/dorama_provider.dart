@@ -8,11 +8,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
   DoramaDatabseNotifier() : super(DoramaStateData(doramaItems: [])) {
-    fetchList();
+    //fetchList();
+    fetchData();
   }
 
-  static const _addCount = 20;
+  static const _limit = 20;
   final _db = MyDatabase();
+  int _page = 1;
 
   ///
   /// データの書き込み
@@ -76,13 +78,31 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
     );
   }
 
+  fetchData() async {
+    state = state.copyWith(isLoading: true);
+    final List<DoramaData> items =
+        await _db.fetchDorama(offset: _page * _limit, limit: _limit);
+    final List<DoramaData> newItems = [...state.doramaItems, ...items];
+
+    if (items.length % _limit != 0 || items.isEmpty) {
+      state = state.copyWith(hasNext: false);
+    }
+
+    state = state.copyWith(
+      isLoading: false,
+      isReadyData: true,
+      doramaItems: newItems,
+    );
+    _page++;
+  }
+
   ///
   /// ダミーデータ生成
   ///
   Future<List<DoramaData>> fetchNextDummyList() async =>
       Future.delayed(const Duration(seconds: 2), () {
         final items = <DoramaData>[];
-        for (var i = 0; i < _addCount; i++) {
+        for (var i = 0; i < _limit; i++) {
           final id = state.doramaItems.length + i + 1;
           items.add(DoramaData(
             id: id,

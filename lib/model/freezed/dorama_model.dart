@@ -16,6 +16,7 @@ abstract class DoramaStateData with _$DoramaStateData {
   factory DoramaStateData({
     @Default(false) bool isLoading,
     @Default(true) bool isReadyData,
+    @Default(true) bool hasNext,
     @Default([]) List<DoramaData> doramaItems,
   }) = _DoramaStateData;
 }

@@ -55,6 +55,16 @@ class MyDatabase extends _$MyDatabase {
   //全てのドラマデータを取得
   Future<List<DoramaData>> readAllDorama() => select(dorama).get();
 
+  ///
+  /// データを取得
+  ///
+  Future<List<DoramaData>> fetchDorama({
+    required int offset,
+    required int limit,
+  }) {
+    return (select(dorama)..limit(limit, offset: offset)).get();
+  }
+
   //追加(ドラマ)
   Future writeDorama(DoramaCompanion data) => into(dorama).insert(data);
 

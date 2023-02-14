@@ -21,10 +21,12 @@ class _$DoramaStateDataTearOff {
   _DoramaStateData call(
       {bool isLoading = false,
       bool isReadyData = true,
+      bool hasNext = true,
       List<DoramaData> doramaItems = const []}) {
     return _DoramaStateData(
       isLoading: isLoading,
       isReadyData: isReadyData,
+      hasNext: hasNext,
       doramaItems: doramaItems,
     );
   }
@@ -37,6 +39,7 @@ const $DoramaStateData = _$DoramaStateDataTearOff();
 mixin _$DoramaStateData {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isReadyData => throw _privateConstructorUsedError;
+  bool get hasNext => throw _privateConstructorUsedError;
   List<DoramaData> get doramaItems => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -49,7 +52,11 @@ abstract class $DoramaStateDataCopyWith<$Res> {
   factory $DoramaStateDataCopyWith(
           DoramaStateData value, $Res Function(DoramaStateData) then) =
       _$DoramaStateDataCopyWithImpl<$Res>;
-  $Res call({bool isLoading, bool isReadyData, List<DoramaData> doramaItems});
+  $Res call(
+      {bool isLoading,
+      bool isReadyData,
+      bool hasNext,
+      List<DoramaData> doramaItems});
 }
 
 /// @nodoc
@@ -65,6 +72,7 @@ class _$DoramaStateDataCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? isReadyData = freezed,
+    Object? hasNext = freezed,
     Object? doramaItems = freezed,
   }) {
     return _then(_value.copyWith(
@@ -75,6 +83,10 @@ class _$DoramaStateDataCopyWithImpl<$Res>
       isReadyData: isReadyData == freezed
           ? _value.isReadyData
           : isReadyData // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNext: hasNext == freezed
+          ? _value.hasNext
+          : hasNext // ignore: cast_nullable_to_non_nullable
               as bool,
       doramaItems: doramaItems == freezed
           ? _value.doramaItems
@@ -91,7 +103,11 @@ abstract class _$DoramaStateDataCopyWith<$Res>
           _DoramaStateData value, $Res Function(_DoramaStateData) then) =
       __$DoramaStateDataCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading, bool isReadyData, List<DoramaData> doramaItems});
+  $Res call(
+      {bool isLoading,
+      bool isReadyData,
+      bool hasNext,
+      List<DoramaData> doramaItems});
 }
 
 /// @nodoc
@@ -109,6 +125,7 @@ class __$DoramaStateDataCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? isReadyData = freezed,
+    Object? hasNext = freezed,
     Object? doramaItems = freezed,
   }) {
     return _then(_DoramaStateData(
@@ -119,6 +136,10 @@ class __$DoramaStateDataCopyWithImpl<$Res>
       isReadyData: isReadyData == freezed
           ? _value.isReadyData
           : isReadyData // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNext: hasNext == freezed
+          ? _value.hasNext
+          : hasNext // ignore: cast_nullable_to_non_nullable
               as bool,
       doramaItems: doramaItems == freezed
           ? _value.doramaItems
@@ -134,6 +155,7 @@ class _$_DoramaStateData implements _DoramaStateData {
   _$_DoramaStateData(
       {this.isLoading = false,
       this.isReadyData = true,
+      this.hasNext = true,
       this.doramaItems = const []});
 
   @JsonKey()
@@ -144,11 +166,14 @@ class _$_DoramaStateData implements _DoramaStateData {
   final bool isReadyData;
   @JsonKey()
   @override
+  final bool hasNext;
+  @JsonKey()
+  @override
   final List<DoramaData> doramaItems;
 
   @override
   String toString() {
-    return 'DoramaStateData(isLoading: $isLoading, isReadyData: $isReadyData, doramaItems: $doramaItems)';
+    return 'DoramaStateData(isLoading: $isLoading, isReadyData: $isReadyData, hasNext: $hasNext, doramaItems: $doramaItems)';
   }
 
   @override
@@ -159,6 +184,7 @@ class _$_DoramaStateData implements _DoramaStateData {
             const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
             const DeepCollectionEquality()
                 .equals(other.isReadyData, isReadyData) &&
+            const DeepCollectionEquality().equals(other.hasNext, hasNext) &&
             const DeepCollectionEquality()
                 .equals(other.doramaItems, doramaItems));
   }
@@ -168,6 +194,7 @@ class _$_DoramaStateData implements _DoramaStateData {
       runtimeType,
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(isReadyData),
+      const DeepCollectionEquality().hash(hasNext),
       const DeepCollectionEquality().hash(doramaItems));
 
   @JsonKey(ignore: true)
@@ -180,12 +207,15 @@ abstract class _DoramaStateData implements DoramaStateData {
   factory _DoramaStateData(
       {bool isLoading,
       bool isReadyData,
+      bool hasNext,
       List<DoramaData> doramaItems}) = _$_DoramaStateData;
 
   @override
   bool get isLoading;
   @override
   bool get isReadyData;
+  @override
+  bool get hasNext;
   @override
   List<DoramaData> get doramaItems;
   @override
