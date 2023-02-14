@@ -221,11 +221,15 @@ class _$TempMemoDataTearOff {
   const _$TempMemoDataTearOff();
 
   _TempMemoData call(
-      {String title = '', String content = '', int categoryId = 0}) {
+      {String title = '',
+      String content = '',
+      int categoryId = 0,
+      int dId = 0}) {
     return _TempMemoData(
       title: title,
       content: content,
       categoryId: categoryId,
+      dId: dId,
     );
   }
 }
@@ -238,6 +242,7 @@ mixin _$TempMemoData {
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   int get categoryId => throw _privateConstructorUsedError;
+  int get dId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TempMemoDataCopyWith<TempMemoData> get copyWith =>
@@ -249,7 +254,7 @@ abstract class $TempMemoDataCopyWith<$Res> {
   factory $TempMemoDataCopyWith(
           TempMemoData value, $Res Function(TempMemoData) then) =
       _$TempMemoDataCopyWithImpl<$Res>;
-  $Res call({String title, String content, int categoryId});
+  $Res call({String title, String content, int categoryId, int dId});
 }
 
 /// @nodoc
@@ -265,6 +270,7 @@ class _$TempMemoDataCopyWithImpl<$Res> implements $TempMemoDataCopyWith<$Res> {
     Object? title = freezed,
     Object? content = freezed,
     Object? categoryId = freezed,
+    Object? dId = freezed,
   }) {
     return _then(_value.copyWith(
       title: title == freezed
@@ -279,6 +285,10 @@ class _$TempMemoDataCopyWithImpl<$Res> implements $TempMemoDataCopyWith<$Res> {
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
               as int,
+      dId: dId == freezed
+          ? _value.dId
+          : dId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -290,7 +300,7 @@ abstract class _$TempMemoDataCopyWith<$Res>
           _TempMemoData value, $Res Function(_TempMemoData) then) =
       __$TempMemoDataCopyWithImpl<$Res>;
   @override
-  $Res call({String title, String content, int categoryId});
+  $Res call({String title, String content, int categoryId, int dId});
 }
 
 /// @nodoc
@@ -308,6 +318,7 @@ class __$TempMemoDataCopyWithImpl<$Res> extends _$TempMemoDataCopyWithImpl<$Res>
     Object? title = freezed,
     Object? content = freezed,
     Object? categoryId = freezed,
+    Object? dId = freezed,
   }) {
     return _then(_TempMemoData(
       title: title == freezed
@@ -322,6 +333,10 @@ class __$TempMemoDataCopyWithImpl<$Res> extends _$TempMemoDataCopyWithImpl<$Res>
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
               as int,
+      dId: dId == freezed
+          ? _value.dId
+          : dId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -329,7 +344,8 @@ class __$TempMemoDataCopyWithImpl<$Res> extends _$TempMemoDataCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_TempMemoData implements _TempMemoData {
-  _$_TempMemoData({this.title = '', this.content = '', this.categoryId = 0});
+  _$_TempMemoData(
+      {this.title = '', this.content = '', this.categoryId = 0, this.dId = 0});
 
   @JsonKey()
   @override
@@ -340,10 +356,13 @@ class _$_TempMemoData implements _TempMemoData {
   @JsonKey()
   @override
   final int categoryId;
+  @JsonKey()
+  @override
+  final int dId;
 
   @override
   String toString() {
-    return 'TempMemoData(title: $title, content: $content, categoryId: $categoryId)';
+    return 'TempMemoData(title: $title, content: $content, categoryId: $categoryId, dId: $dId)';
   }
 
   @override
@@ -354,7 +373,8 @@ class _$_TempMemoData implements _TempMemoData {
             const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality().equals(other.content, content) &&
             const DeepCollectionEquality()
-                .equals(other.categoryId, categoryId));
+                .equals(other.categoryId, categoryId) &&
+            const DeepCollectionEquality().equals(other.dId, dId));
   }
 
   @override
@@ -362,7 +382,8 @@ class _$_TempMemoData implements _TempMemoData {
       runtimeType,
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(content),
-      const DeepCollectionEquality().hash(categoryId));
+      const DeepCollectionEquality().hash(categoryId),
+      const DeepCollectionEquality().hash(dId));
 
   @JsonKey(ignore: true)
   @override
@@ -371,8 +392,11 @@ class _$_TempMemoData implements _TempMemoData {
 }
 
 abstract class _TempMemoData implements TempMemoData {
-  factory _TempMemoData({String title, String content, int categoryId}) =
-      _$_TempMemoData;
+  factory _TempMemoData(
+      {String title,
+      String content,
+      int categoryId,
+      int dId}) = _$_TempMemoData;
 
   @override
   String get title;
@@ -380,6 +404,8 @@ abstract class _TempMemoData implements TempMemoData {
   String get content;
   @override
   int get categoryId;
+  @override
+  int get dId;
   @override
   @JsonKey(ignore: true)
   _$TempMemoDataCopyWith<_TempMemoData> get copyWith =>

@@ -31,5 +31,6 @@ abstract class TempMemoData with _$TempMemoData {
     @Default('') String title,
     @Default('') String content,
     @Default(0) int categoryId,
+    @Default(0) int dId,
   }) = _TempMemoData;
 }
