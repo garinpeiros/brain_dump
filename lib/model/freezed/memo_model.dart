@@ -20,14 +20,16 @@ abstract class MemoStateData with _$MemoStateData {
   factory MemoStateData({
     @Default(false) bool isLoading,
     @Default(true) bool isReady,
+    @Default(true) bool hasNext,
     @Default([]) List<MemoData> memoItems,
   }) = _MemoStateData;
 }
 
 @freezed
-abstract class TempDoramaData with _$TempDoramaData {
-  factory TempDoramaData({
+abstract class TempMemoData with _$TempMemoData {
+  factory TempMemoData({
     @Default('') String title,
     @Default('') String content,
-  }) = _TempDoramaData;
+    @Default(0) int categoryId,
+  }) = _TempMemoData;
 }

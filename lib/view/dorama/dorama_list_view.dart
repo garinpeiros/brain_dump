@@ -1,5 +1,6 @@
 import 'package:brain_dump/view/dorama/widget/dorama_tile_widget.dart';
 import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
+import 'package:brain_dump/widget/enpty_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
     required List<DoramaData> items,
     required DoramaDatabseNotifier provider,
   }) {
-    if (items.isEmpty) return _emptyView();
+    if (items.isEmpty) return EmptyWidget(message: "notice_dorama".tr());
 
     return ListView.builder(
       controller: _listScrollController,
@@ -76,16 +77,6 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
       itemBuilder: (context, index) => DoramaTileWidget(
         data: items[index],
         provider: provider,
-      ),
-    );
-  }
-
-  Widget _emptyView() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Text(
-        "notice_dorama".tr(),
-        style: const TextStyle(fontSize: 15),
       ),
     );
   }

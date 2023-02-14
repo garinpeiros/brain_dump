@@ -16,7 +16,6 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
   }
 
   static const _limit = 10;
-  final _db = MyDatabase();
   int _page = 0;
 
   ///
@@ -41,9 +40,6 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
   /// データ削除
   ///
   deleteData(DoramaData data) async {
-    if (data.title.isEmpty) {
-      return false;
-    }
     state = state.copyWith(isLoading: true);
     await _repository.delete(data.id);
     refresh();
@@ -53,9 +49,6 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
   /// データ更新
   ///
   updateData(DoramaData data) async {
-    if (data.title.isEmpty) {
-      return false;
-    }
     state = state.copyWith(isLoading: true);
     await _repository.update(data);
     refresh();
@@ -65,7 +58,11 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
   /// リフレッシュ
   ///
   refresh() {
-    state = state.copyWith(doramaItems: []);
+    state = state.copyWith(
+      doramaItems: [],
+      isLoading: false,
+      hasNext: true,
+    );
     _page = 0;
     fetchData();
   }

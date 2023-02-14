@@ -81,6 +81,12 @@ class MyDatabase extends _$MyDatabase {
   //全てのメモデータを取得
   Future<List<MemoData>> readAllMemo() => select(memo).get();
 
+  ///
+  /// ドラマID単位でデータを取得
+  ///
+  Future<List<MemoData>> fetchDataByDorama(int dId) =>
+      (select(memo)..where((tbl) => tbl.dId.equals(dId))).get();
+
   //追加(メモ）
   Future writeMemo(MemoCompanion data) => into(memo).insert(data);
 

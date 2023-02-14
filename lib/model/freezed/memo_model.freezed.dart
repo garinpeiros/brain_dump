@@ -21,10 +21,12 @@ class _$MemoStateDataTearOff {
   _MemoStateData call(
       {bool isLoading = false,
       bool isReady = true,
+      bool hasNext = true,
       List<MemoData> memoItems = const []}) {
     return _MemoStateData(
       isLoading: isLoading,
       isReady: isReady,
+      hasNext: hasNext,
       memoItems: memoItems,
     );
   }
@@ -37,6 +39,7 @@ const $MemoStateData = _$MemoStateDataTearOff();
 mixin _$MemoStateData {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isReady => throw _privateConstructorUsedError;
+  bool get hasNext => throw _privateConstructorUsedError;
   List<MemoData> get memoItems => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -49,7 +52,8 @@ abstract class $MemoStateDataCopyWith<$Res> {
   factory $MemoStateDataCopyWith(
           MemoStateData value, $Res Function(MemoStateData) then) =
       _$MemoStateDataCopyWithImpl<$Res>;
-  $Res call({bool isLoading, bool isReady, List<MemoData> memoItems});
+  $Res call(
+      {bool isLoading, bool isReady, bool hasNext, List<MemoData> memoItems});
 }
 
 /// @nodoc
@@ -65,6 +69,7 @@ class _$MemoStateDataCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? isReady = freezed,
+    Object? hasNext = freezed,
     Object? memoItems = freezed,
   }) {
     return _then(_value.copyWith(
@@ -75,6 +80,10 @@ class _$MemoStateDataCopyWithImpl<$Res>
       isReady: isReady == freezed
           ? _value.isReady
           : isReady // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNext: hasNext == freezed
+          ? _value.hasNext
+          : hasNext // ignore: cast_nullable_to_non_nullable
               as bool,
       memoItems: memoItems == freezed
           ? _value.memoItems
@@ -91,7 +100,8 @@ abstract class _$MemoStateDataCopyWith<$Res>
           _MemoStateData value, $Res Function(_MemoStateData) then) =
       __$MemoStateDataCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading, bool isReady, List<MemoData> memoItems});
+  $Res call(
+      {bool isLoading, bool isReady, bool hasNext, List<MemoData> memoItems});
 }
 
 /// @nodoc
@@ -109,6 +119,7 @@ class __$MemoStateDataCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = freezed,
     Object? isReady = freezed,
+    Object? hasNext = freezed,
     Object? memoItems = freezed,
   }) {
     return _then(_MemoStateData(
@@ -119,6 +130,10 @@ class __$MemoStateDataCopyWithImpl<$Res>
       isReady: isReady == freezed
           ? _value.isReady
           : isReady // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNext: hasNext == freezed
+          ? _value.hasNext
+          : hasNext // ignore: cast_nullable_to_non_nullable
               as bool,
       memoItems: memoItems == freezed
           ? _value.memoItems
@@ -132,7 +147,10 @@ class __$MemoStateDataCopyWithImpl<$Res>
 
 class _$_MemoStateData implements _MemoStateData {
   _$_MemoStateData(
-      {this.isLoading = false, this.isReady = true, this.memoItems = const []});
+      {this.isLoading = false,
+      this.isReady = true,
+      this.hasNext = true,
+      this.memoItems = const []});
 
   @JsonKey()
   @override
@@ -142,11 +160,14 @@ class _$_MemoStateData implements _MemoStateData {
   final bool isReady;
   @JsonKey()
   @override
+  final bool hasNext;
+  @JsonKey()
+  @override
   final List<MemoData> memoItems;
 
   @override
   String toString() {
-    return 'MemoStateData(isLoading: $isLoading, isReady: $isReady, memoItems: $memoItems)';
+    return 'MemoStateData(isLoading: $isLoading, isReady: $isReady, hasNext: $hasNext, memoItems: $memoItems)';
   }
 
   @override
@@ -156,6 +177,7 @@ class _$_MemoStateData implements _MemoStateData {
             other is _MemoStateData &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
             const DeepCollectionEquality().equals(other.isReady, isReady) &&
+            const DeepCollectionEquality().equals(other.hasNext, hasNext) &&
             const DeepCollectionEquality().equals(other.memoItems, memoItems));
   }
 
@@ -164,6 +186,7 @@ class _$_MemoStateData implements _MemoStateData {
       runtimeType,
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(isReady),
+      const DeepCollectionEquality().hash(hasNext),
       const DeepCollectionEquality().hash(memoItems));
 
   @JsonKey(ignore: true)
@@ -176,12 +199,15 @@ abstract class _MemoStateData implements MemoStateData {
   factory _MemoStateData(
       {bool isLoading,
       bool isReady,
+      bool hasNext,
       List<MemoData> memoItems}) = _$_MemoStateData;
 
   @override
   bool get isLoading;
   @override
   bool get isReady;
+  @override
+  bool get hasNext;
   @override
   List<MemoData> get memoItems;
   @override
@@ -191,51 +217,54 @@ abstract class _MemoStateData implements MemoStateData {
 }
 
 /// @nodoc
-class _$TempDoramaDataTearOff {
-  const _$TempDoramaDataTearOff();
+class _$TempMemoDataTearOff {
+  const _$TempMemoDataTearOff();
 
-  _TempDoramaData call({String title = '', String content = ''}) {
-    return _TempDoramaData(
+  _TempMemoData call(
+      {String title = '', String content = '', int categoryId = 0}) {
+    return _TempMemoData(
       title: title,
       content: content,
+      categoryId: categoryId,
     );
   }
 }
 
 /// @nodoc
-const $TempDoramaData = _$TempDoramaDataTearOff();
+const $TempMemoData = _$TempMemoDataTearOff();
 
 /// @nodoc
-mixin _$TempDoramaData {
+mixin _$TempMemoData {
   String get title => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  int get categoryId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TempDoramaDataCopyWith<TempDoramaData> get copyWith =>
+  $TempMemoDataCopyWith<TempMemoData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TempDoramaDataCopyWith<$Res> {
-  factory $TempDoramaDataCopyWith(
-          TempDoramaData value, $Res Function(TempDoramaData) then) =
-      _$TempDoramaDataCopyWithImpl<$Res>;
-  $Res call({String title, String content});
+abstract class $TempMemoDataCopyWith<$Res> {
+  factory $TempMemoDataCopyWith(
+          TempMemoData value, $Res Function(TempMemoData) then) =
+      _$TempMemoDataCopyWithImpl<$Res>;
+  $Res call({String title, String content, int categoryId});
 }
 
 /// @nodoc
-class _$TempDoramaDataCopyWithImpl<$Res>
-    implements $TempDoramaDataCopyWith<$Res> {
-  _$TempDoramaDataCopyWithImpl(this._value, this._then);
+class _$TempMemoDataCopyWithImpl<$Res> implements $TempMemoDataCopyWith<$Res> {
+  _$TempMemoDataCopyWithImpl(this._value, this._then);
 
-  final TempDoramaData _value;
+  final TempMemoData _value;
   // ignore: unused_field
-  final $Res Function(TempDoramaData) _then;
+  final $Res Function(TempMemoData) _then;
 
   @override
   $Res call({
     Object? title = freezed,
     Object? content = freezed,
+    Object? categoryId = freezed,
   }) {
     return _then(_value.copyWith(
       title: title == freezed
@@ -246,37 +275,41 @@ class _$TempDoramaDataCopyWithImpl<$Res>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
+      categoryId: categoryId == freezed
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$TempDoramaDataCopyWith<$Res>
-    implements $TempDoramaDataCopyWith<$Res> {
-  factory _$TempDoramaDataCopyWith(
-          _TempDoramaData value, $Res Function(_TempDoramaData) then) =
-      __$TempDoramaDataCopyWithImpl<$Res>;
+abstract class _$TempMemoDataCopyWith<$Res>
+    implements $TempMemoDataCopyWith<$Res> {
+  factory _$TempMemoDataCopyWith(
+          _TempMemoData value, $Res Function(_TempMemoData) then) =
+      __$TempMemoDataCopyWithImpl<$Res>;
   @override
-  $Res call({String title, String content});
+  $Res call({String title, String content, int categoryId});
 }
 
 /// @nodoc
-class __$TempDoramaDataCopyWithImpl<$Res>
-    extends _$TempDoramaDataCopyWithImpl<$Res>
-    implements _$TempDoramaDataCopyWith<$Res> {
-  __$TempDoramaDataCopyWithImpl(
-      _TempDoramaData _value, $Res Function(_TempDoramaData) _then)
-      : super(_value, (v) => _then(v as _TempDoramaData));
+class __$TempMemoDataCopyWithImpl<$Res> extends _$TempMemoDataCopyWithImpl<$Res>
+    implements _$TempMemoDataCopyWith<$Res> {
+  __$TempMemoDataCopyWithImpl(
+      _TempMemoData _value, $Res Function(_TempMemoData) _then)
+      : super(_value, (v) => _then(v as _TempMemoData));
 
   @override
-  _TempDoramaData get _value => super._value as _TempDoramaData;
+  _TempMemoData get _value => super._value as _TempMemoData;
 
   @override
   $Res call({
     Object? title = freezed,
     Object? content = freezed,
+    Object? categoryId = freezed,
   }) {
-    return _then(_TempDoramaData(
+    return _then(_TempMemoData(
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -285,14 +318,18 @@ class __$TempDoramaDataCopyWithImpl<$Res>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
+      categoryId: categoryId == freezed
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_TempDoramaData implements _TempDoramaData {
-  _$_TempDoramaData({this.title = '', this.content = ''});
+class _$_TempMemoData implements _TempMemoData {
+  _$_TempMemoData({this.title = '', this.content = '', this.categoryId = 0});
 
   @JsonKey()
   @override
@@ -300,42 +337,51 @@ class _$_TempDoramaData implements _TempDoramaData {
   @JsonKey()
   @override
   final String content;
+  @JsonKey()
+  @override
+  final int categoryId;
 
   @override
   String toString() {
-    return 'TempDoramaData(title: $title, content: $content)';
+    return 'TempMemoData(title: $title, content: $content, categoryId: $categoryId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _TempDoramaData &&
+            other is _TempMemoData &&
             const DeepCollectionEquality().equals(other.title, title) &&
-            const DeepCollectionEquality().equals(other.content, content));
+            const DeepCollectionEquality().equals(other.content, content) &&
+            const DeepCollectionEquality()
+                .equals(other.categoryId, categoryId));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(title),
-      const DeepCollectionEquality().hash(content));
+      const DeepCollectionEquality().hash(content),
+      const DeepCollectionEquality().hash(categoryId));
 
   @JsonKey(ignore: true)
   @override
-  _$TempDoramaDataCopyWith<_TempDoramaData> get copyWith =>
-      __$TempDoramaDataCopyWithImpl<_TempDoramaData>(this, _$identity);
+  _$TempMemoDataCopyWith<_TempMemoData> get copyWith =>
+      __$TempMemoDataCopyWithImpl<_TempMemoData>(this, _$identity);
 }
 
-abstract class _TempDoramaData implements TempDoramaData {
-  factory _TempDoramaData({String title, String content}) = _$_TempDoramaData;
+abstract class _TempMemoData implements TempMemoData {
+  factory _TempMemoData({String title, String content, int categoryId}) =
+      _$_TempMemoData;
 
   @override
   String get title;
   @override
   String get content;
   @override
+  int get categoryId;
+  @override
   @JsonKey(ignore: true)
-  _$TempDoramaDataCopyWith<_TempDoramaData> get copyWith =>
+  _$TempMemoDataCopyWith<_TempMemoData> get copyWith =>
       throw _privateConstructorUsedError;
 }
