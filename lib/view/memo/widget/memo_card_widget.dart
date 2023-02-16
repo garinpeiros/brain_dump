@@ -4,16 +4,18 @@ import 'package:brain_dump/view/memo/widget/memo_delete_dialog_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../memo_form_view.dart';
+
 class MemoCardWidget extends StatelessWidget {
   final MemoData memo;
   final DoramaData dorama;
-  final Function action;
+  final Function deleteAction;
 
   const MemoCardWidget({
     Key? key,
     required this.memo,
     required this.dorama,
-    required this.action,
+    required this.deleteAction,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -142,17 +144,7 @@ class MemoCardWidget extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return MemoDeleteDialogWidget(
                                   memo: memo,
-                                  returnAction: action,
-                                  /*
-                                      () => {
-                                    Navigator.of(context).push<dynamic>(
-                                      MaterialPageRoute<dynamic>(
-                                        builder: (context) {
-                                          return MainBottomNavigation();
-                                        },
-                                      ),
-                                    )
-                                  },*/
+                                  action: deleteAction,
                                 );
                               },
                             );
@@ -177,20 +169,18 @@ class MemoCardWidget extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.topLeft,
                         child: IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           onPressed: () => {
-                            /*
                             Navigator.of(context).push<dynamic>(
                               MaterialPageRoute<dynamic>(
                                 builder: (context) {
-                                  return MemoFormScreen(
+                                  return MemoFormView(
                                     editMemo: memo,
                                     dorama: dorama,
                                   );
                                 },
                               ),
                             )
-                            */
                           },
                         ),
                       ),

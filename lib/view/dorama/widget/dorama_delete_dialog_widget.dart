@@ -20,7 +20,7 @@ class DoramaDeleteDialogWidget extends StatelessWidget {
       title: Text("delete_dorama".tr()),
       contentPadding: const EdgeInsets.all(16),
       children: <Widget>[
-        Text("confirm_delete_dorama".tr()),
+        Text("confirm_delete".tr()),
         ElevatedButton(
           child: Text(
             "delete".tr(),

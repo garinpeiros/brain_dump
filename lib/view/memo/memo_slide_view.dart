@@ -28,7 +28,7 @@ class MemoSlideView extends HookConsumerWidget {
             (item) => MemoCardWidget(
               memo: item,
               dorama: dorama,
-              action: () => {},
+              deleteAction: () => {provider.deleteData(item)},
             ),
           )
           .toList();
@@ -83,16 +83,14 @@ class MemoSlideView extends HookConsumerWidget {
   }) {
     return Column(
       children: [
-        Container(
-          child: CarouselSlider(
-            options: CarouselOptions(
-              height: height,
-              autoPlay: false,
-              aspectRatio: 2.0,
-              enlargeCenterPage: true,
-            ),
-            items: textSliders,
+        CarouselSlider(
+          options: CarouselOptions(
+            height: height,
+            autoPlay: false,
+            aspectRatio: 2.0,
+            enlargeCenterPage: true,
           ),
+          items: textSliders,
         ),
       ],
     );

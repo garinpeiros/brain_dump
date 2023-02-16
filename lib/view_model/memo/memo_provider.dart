@@ -48,7 +48,16 @@ class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
     state = state.copyWith(isLoading: true);
     await _repository.updateData(data);
     state = state.copyWith(isLoading: false);
-    //refresh();
+    refresh(dId: data.dId);
+  }
+
+  ///
+  /// データ削除
+  ///
+  deleteData(MemoData data) async {
+    state = state.copyWith(isLoading: true);
+    await _repository.deleteData(data.id);
+    refresh(dId: data.dId);
   }
 
   Future<void> refresh({required int dId}) async {
