@@ -65,7 +65,7 @@ class DoramaTileWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(data.title),
-              MemoGageWidget(currentCount: count, maxCount: 10),
+              MemoGageWidget(currentCount: count, maxCount: 50),
             ],
           ),
           //trailing: const Icon(Icons.more_horiz),

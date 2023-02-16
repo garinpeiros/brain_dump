@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class MemoGageWidget extends StatelessWidget {
   final int currentCount;
@@ -38,12 +39,12 @@ class MemoGageWidget extends StatelessWidget {
   }
 
   Color getCurrentHpColor(int hp) {
-    if (hp > maxCount / 2) {
-      return const Color(0xFF00D308);
+    if (hp > maxCount * 0.9) {
+      return HexColor("#90EE90");
     }
     if (hp > maxCount / 5) {
-      return const Color(0xFFFFC107);
+      return HexColor("#FFBB66");
     }
-    return const Color(0xFFFF0707);
+    return HexColor("#F06060");
   }
 }
