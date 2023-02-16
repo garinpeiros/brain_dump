@@ -129,8 +129,9 @@ class MyDatabase extends _$MyDatabase {
       ..limit(limit, offset: offset);
     query.orderBy([OrderingTerm.desc(memo.id)]);
 
-    var rows = await query.get();
+    print(query.toString());
 
+    var rows = await query.get();
     return rows
         .map((e) => MemoWithDoramaModel(
               e.readTable(memo),

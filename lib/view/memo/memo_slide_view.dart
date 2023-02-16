@@ -28,7 +28,7 @@ class MemoSlideView extends HookConsumerWidget {
             (item) => MemoCardWidget(
               memo: item,
               dorama: dorama,
-              deleteAction: () => {provider.deleteData(item)},
+              delete: () => {provider.deleteData(item)},
             ),
           )
           .toList();
@@ -53,7 +53,9 @@ class MemoSlideView extends HookConsumerWidget {
               height: height,
               textSliders: textSliders,
             )
-          : EmptyWidget(message: "please_memo".tr()),
+          : EmptyWidget(
+              message: "please_memo".tr(),
+            ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

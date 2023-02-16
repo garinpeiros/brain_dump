@@ -24,7 +24,7 @@ class ToolUtil {
     return df.format(DateTime.fromMicrosecondsSinceEpoch(timestamp * 1000));
   }
 
-  static void showLoadingSnackBar(BuildContext context) {
+  static ScaffoldMessengerState showLoadingSnackBar(BuildContext context) {
     var snackBar = SnackBar(
       content: Container(
         height: 50,
@@ -33,6 +33,8 @@ class ToolUtil {
       ),
       duration: const Duration(seconds: 1),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    var state = ScaffoldMessenger.of(context);
+    state.showSnackBar(snackBar);
+    return state;
   }
 }

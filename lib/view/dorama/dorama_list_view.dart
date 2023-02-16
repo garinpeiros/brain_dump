@@ -6,10 +6,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../model/db/db.dart';
-import '../../util/tool_util.dart';
 import 'dorama_form_view.dart';
 
 class DoramaListView extends ConsumerStatefulWidget {
@@ -34,8 +34,11 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
       if (_listScrollController.offset >=
               _listScrollController.position.maxScrollExtent &&
           !_listScrollController.position.outOfRange) {
-        ToolUtil.showLoadingSnackBar(context);
         provider.fetchData();
+        EasyLoading.show(status: "loading".tr());
+        Future.delayed(const Duration(seconds: 1), () {
+          EasyLoading.dismiss(animation: true);
+        });
       }
     }
   }

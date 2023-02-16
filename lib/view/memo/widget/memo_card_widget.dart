@@ -9,13 +9,13 @@ import '../memo_form_view.dart';
 class MemoCardWidget extends StatelessWidget {
   final MemoData memo;
   final DoramaData dorama;
-  final Function deleteAction;
+  final Function delete;
 
   const MemoCardWidget({
     Key? key,
     required this.memo,
     required this.dorama,
-    required this.deleteAction,
+    required this.delete,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class MemoCardWidget extends StatelessWidget {
                               builder: (BuildContext context) {
                                 return MemoDeleteDialogWidget(
                                   memo: memo,
-                                  action: deleteAction,
+                                  action: delete,
                                 );
                               },
                             );

@@ -1,11 +1,12 @@
+import 'package:brain_dump/view/memo/memo_page_view.dart';
 import 'package:brain_dump/view/memo/widget/memo_card_tile_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../util/tool_util.dart';
 import '../../view_model/memo/memo_timeline_provider.dart';
 import '../../widget/enpty_widget.dart';
 
@@ -32,10 +33,17 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
       final maxScroll = _listScrollController.position.maxScrollExtent;
       final currentScroll = _listScrollController.position.pixels;
       if (maxScroll - currentScroll <= _scrollThreshold) {
-        ToolUtil.showLoadingSnackBar(context);
         provider.fetchData();
+        EasyLoading.show(status: "loading".tr());
+        Future.delayed(const Duration(seconds: 1), () {
+          EasyLoading.dismiss(animation: true);
+        });
       }
     }
+  }
+
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -77,7 +85,17 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
       itemCount: items.length,
       itemBuilder: (context, index) => MemoCardTileWidget(
         data: items[index],
-        onTap: () {},
+        onTap: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MemoPageView(
+                list: items,
+                index: index,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
