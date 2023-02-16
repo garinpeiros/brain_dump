@@ -1,3 +1,4 @@
+import 'package:brain_dump/model/dorama_with_count_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../db/db.dart';
@@ -27,4 +28,14 @@ abstract class TempDoramaData with _$TempDoramaData {
     @Default('') title,
     @Default(0) categoryId,
   }) = _TempDoramaData;
+}
+
+@freezed
+abstract class DoramaTlStateData with _$DoramaTlStateData {
+  factory DoramaTlStateData({
+    @Default(false) bool isLoading,
+    @Default(true) bool isReadyData,
+    @Default(true) bool hasNext,
+    @Default([]) List<DoramaWithCountModel> doramaItems,
+  }) = _DoramaTlStateData;
 }

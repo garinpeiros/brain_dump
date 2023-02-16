@@ -1,4 +1,5 @@
 import 'package:brain_dump/model/db/db.dart';
+import 'package:brain_dump/model/dorama_with_count_model.dart';
 
 class DoramaRepository {
   late MyDatabase _db;
@@ -6,7 +7,7 @@ class DoramaRepository {
     _db = MyDatabase.getInstance();
   }
 
-  Future<List<DoramaData>> fetchData({
+  Future<List<DoramaWithCountModel>> fetchData({
     required int offset,
     required int limit,
   }) =>

@@ -369,3 +369,214 @@ abstract class _TempDoramaData implements TempDoramaData {
   _$TempDoramaDataCopyWith<_TempDoramaData> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+class _$DoramaTlStateDataTearOff {
+  const _$DoramaTlStateDataTearOff();
+
+  _DoramaTlStateData call(
+      {bool isLoading = false,
+      bool isReadyData = true,
+      bool hasNext = true,
+      List<DoramaWithCountModel> doramaItems = const []}) {
+    return _DoramaTlStateData(
+      isLoading: isLoading,
+      isReadyData: isReadyData,
+      hasNext: hasNext,
+      doramaItems: doramaItems,
+    );
+  }
+}
+
+/// @nodoc
+const $DoramaTlStateData = _$DoramaTlStateDataTearOff();
+
+/// @nodoc
+mixin _$DoramaTlStateData {
+  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isReadyData => throw _privateConstructorUsedError;
+  bool get hasNext => throw _privateConstructorUsedError;
+  List<DoramaWithCountModel> get doramaItems =>
+      throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $DoramaTlStateDataCopyWith<DoramaTlStateData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $DoramaTlStateDataCopyWith<$Res> {
+  factory $DoramaTlStateDataCopyWith(
+          DoramaTlStateData value, $Res Function(DoramaTlStateData) then) =
+      _$DoramaTlStateDataCopyWithImpl<$Res>;
+  $Res call(
+      {bool isLoading,
+      bool isReadyData,
+      bool hasNext,
+      List<DoramaWithCountModel> doramaItems});
+}
+
+/// @nodoc
+class _$DoramaTlStateDataCopyWithImpl<$Res>
+    implements $DoramaTlStateDataCopyWith<$Res> {
+  _$DoramaTlStateDataCopyWithImpl(this._value, this._then);
+
+  final DoramaTlStateData _value;
+  // ignore: unused_field
+  final $Res Function(DoramaTlStateData) _then;
+
+  @override
+  $Res call({
+    Object? isLoading = freezed,
+    Object? isReadyData = freezed,
+    Object? hasNext = freezed,
+    Object? doramaItems = freezed,
+  }) {
+    return _then(_value.copyWith(
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isReadyData: isReadyData == freezed
+          ? _value.isReadyData
+          : isReadyData // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNext: hasNext == freezed
+          ? _value.hasNext
+          : hasNext // ignore: cast_nullable_to_non_nullable
+              as bool,
+      doramaItems: doramaItems == freezed
+          ? _value.doramaItems
+          : doramaItems // ignore: cast_nullable_to_non_nullable
+              as List<DoramaWithCountModel>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$DoramaTlStateDataCopyWith<$Res>
+    implements $DoramaTlStateDataCopyWith<$Res> {
+  factory _$DoramaTlStateDataCopyWith(
+          _DoramaTlStateData value, $Res Function(_DoramaTlStateData) then) =
+      __$DoramaTlStateDataCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {bool isLoading,
+      bool isReadyData,
+      bool hasNext,
+      List<DoramaWithCountModel> doramaItems});
+}
+
+/// @nodoc
+class __$DoramaTlStateDataCopyWithImpl<$Res>
+    extends _$DoramaTlStateDataCopyWithImpl<$Res>
+    implements _$DoramaTlStateDataCopyWith<$Res> {
+  __$DoramaTlStateDataCopyWithImpl(
+      _DoramaTlStateData _value, $Res Function(_DoramaTlStateData) _then)
+      : super(_value, (v) => _then(v as _DoramaTlStateData));
+
+  @override
+  _DoramaTlStateData get _value => super._value as _DoramaTlStateData;
+
+  @override
+  $Res call({
+    Object? isLoading = freezed,
+    Object? isReadyData = freezed,
+    Object? hasNext = freezed,
+    Object? doramaItems = freezed,
+  }) {
+    return _then(_DoramaTlStateData(
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isReadyData: isReadyData == freezed
+          ? _value.isReadyData
+          : isReadyData // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNext: hasNext == freezed
+          ? _value.hasNext
+          : hasNext // ignore: cast_nullable_to_non_nullable
+              as bool,
+      doramaItems: doramaItems == freezed
+          ? _value.doramaItems
+          : doramaItems // ignore: cast_nullable_to_non_nullable
+              as List<DoramaWithCountModel>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_DoramaTlStateData implements _DoramaTlStateData {
+  _$_DoramaTlStateData(
+      {this.isLoading = false,
+      this.isReadyData = true,
+      this.hasNext = true,
+      this.doramaItems = const []});
+
+  @JsonKey()
+  @override
+  final bool isLoading;
+  @JsonKey()
+  @override
+  final bool isReadyData;
+  @JsonKey()
+  @override
+  final bool hasNext;
+  @JsonKey()
+  @override
+  final List<DoramaWithCountModel> doramaItems;
+
+  @override
+  String toString() {
+    return 'DoramaTlStateData(isLoading: $isLoading, isReadyData: $isReadyData, hasNext: $hasNext, doramaItems: $doramaItems)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _DoramaTlStateData &&
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality()
+                .equals(other.isReadyData, isReadyData) &&
+            const DeepCollectionEquality().equals(other.hasNext, hasNext) &&
+            const DeepCollectionEquality()
+                .equals(other.doramaItems, doramaItems));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(isReadyData),
+      const DeepCollectionEquality().hash(hasNext),
+      const DeepCollectionEquality().hash(doramaItems));
+
+  @JsonKey(ignore: true)
+  @override
+  _$DoramaTlStateDataCopyWith<_DoramaTlStateData> get copyWith =>
+      __$DoramaTlStateDataCopyWithImpl<_DoramaTlStateData>(this, _$identity);
+}
+
+abstract class _DoramaTlStateData implements DoramaTlStateData {
+  factory _DoramaTlStateData(
+      {bool isLoading,
+      bool isReadyData,
+      bool hasNext,
+      List<DoramaWithCountModel> doramaItems}) = _$_DoramaTlStateData;
+
+  @override
+  bool get isLoading;
+  @override
+  bool get isReadyData;
+  @override
+  bool get hasNext;
+  @override
+  List<DoramaWithCountModel> get doramaItems;
+  @override
+  @JsonKey(ignore: true)
+  _$DoramaTlStateDataCopyWith<_DoramaTlStateData> get copyWith =>
+      throw _privateConstructorUsedError;
+}

@@ -2,18 +2,19 @@ import 'dart:math';
 
 import 'package:brain_dump/config/category_config.dart';
 import 'package:brain_dump/model/db/db.dart';
+import 'package:brain_dump/model/dorama_with_count_model.dart';
 import 'package:brain_dump/model/freezed/dorama_model.dart';
 import 'package:brain_dump/repository/dorama_repository.dart';
 import 'package:brain_dump/repository/memo_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
+class DoramaDatabaseNotifier extends StateNotifier<DoramaTlStateData> {
   final DoramaRepository _repository = DoramaRepository();
 
   final MemoRepository _memoRepository = MemoRepository();
 
-  DoramaDatabaseNotifier() : super(DoramaStateData(doramaItems: [])) {
+  DoramaDatabaseNotifier() : super(DoramaTlStateData(doramaItems: [])) {
     fetchData();
   }
 
@@ -84,11 +85,14 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
   ///
   Future<void> fetchData() async {
     state = state.copyWith(isLoading: true);
-    final List<DoramaData> items = await _repository.fetchData(
+    final List<DoramaWithCountModel> items = await _repository.fetchData(
       offset: _page * _limit,
       limit: _limit,
     );
-    final List<DoramaData> newItems = [...state.doramaItems, ...items];
+    final List<DoramaWithCountModel> newItems = [
+      ...state.doramaItems,
+      ...items
+    ];
 
     if (items.length % _limit != 0 || items.isEmpty) {
       state = state.copyWith(hasNext: false);

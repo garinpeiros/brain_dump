@@ -1,3 +1,4 @@
+import 'package:brain_dump/model/dorama_with_count_model.dart';
 import 'package:brain_dump/view/dorama/widget/dorama_tile_widget.dart';
 import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
@@ -9,7 +10,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../model/db/db.dart';
 import 'dorama_form_view.dart';
 
 class DoramaListView extends ConsumerStatefulWidget {
@@ -48,7 +48,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
     ref.watch(doramaDatabaseProvider);
     final provider = ref.watch(doramaDatabaseProvider.notifier);
     final timelineProvider = ref.watch(memoTimelineProvider.notifier);
-    List<DoramaData> items = provider.state.doramaItems;
+    List<DoramaWithCountModel> items = provider.state.doramaItems;
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +76,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
   }
 
   Widget _buildList({
-    required List<DoramaData> items,
+    required List<DoramaWithCountModel> items,
     required DoramaDatabaseNotifier provider,
     required MemoTimelineNotifier timelineProvider,
   }) {
@@ -86,11 +86,12 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
       controller: _listScrollController,
       itemCount: items.length,
       itemBuilder: (context, index) => DoramaTileWidget(
-        data: items[index],
+        data: items[index].dorama,
         delete: () async {
-          await provider.deleteData(items[index]);
+          await provider.deleteData(items[index].dorama);
           await timelineProvider.refresh();
         },
+        count: items[index].count,
       ),
     );
   }

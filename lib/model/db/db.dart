@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:brain_dump/model/dorama_with_count_model.dart';
 import 'package:brain_dump/model/memo_with_dorama_model.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
@@ -65,14 +66,33 @@ class MyDatabase extends _$MyDatabase {
   ///
   /// データを取得
   ///
-  Future<List<DoramaData>> fetchDorama({
+  Future<List<DoramaWithCountModel>> fetchDorama({
     required int offset,
     required int limit,
-  }) {
+  }) async {
+    final amountMemos = memo.id.count();
+
+    final query = select(dorama).join(
+        [innerJoin(memo, memo.dId.equalsExp(dorama.id), useColumns: false)]);
+    query
+      ..addColumns([amountMemos])
+      ..groupBy([memo.dId])
+      ..limit(limit, offset: offset);
+    query.orderBy([OrderingTerm.desc(dorama.id)]);
+
+    var rows = await query.get();
+    return rows
+        .map((e) => DoramaWithCountModel(
+              e.readTable(dorama),
+              e.read(amountMemos),
+            ))
+        .toList();
+    /*
     return (select(dorama)
           ..limit(limit, offset: offset)
           ..orderBy([(t) => OrderingTerm.desc(t.id)]))
         .get();
+     */
   }
 
   ///
