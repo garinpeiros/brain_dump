@@ -411,3 +411,211 @@ abstract class _TempMemoData implements TempMemoData {
   _$TempMemoDataCopyWith<_TempMemoData> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+class _$MemoTlStateDataTearOff {
+  const _$MemoTlStateDataTearOff();
+
+  _MemoTlStateData call(
+      {bool isLoading = false,
+      bool isReady = true,
+      bool hasNext = true,
+      List<MemoWithDoramaModel> memoItems = const []}) {
+    return _MemoTlStateData(
+      isLoading: isLoading,
+      isReady: isReady,
+      hasNext: hasNext,
+      memoItems: memoItems,
+    );
+  }
+}
+
+/// @nodoc
+const $MemoTlStateData = _$MemoTlStateDataTearOff();
+
+/// @nodoc
+mixin _$MemoTlStateData {
+  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isReady => throw _privateConstructorUsedError;
+  bool get hasNext => throw _privateConstructorUsedError;
+  List<MemoWithDoramaModel> get memoItems => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $MemoTlStateDataCopyWith<MemoTlStateData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $MemoTlStateDataCopyWith<$Res> {
+  factory $MemoTlStateDataCopyWith(
+          MemoTlStateData value, $Res Function(MemoTlStateData) then) =
+      _$MemoTlStateDataCopyWithImpl<$Res>;
+  $Res call(
+      {bool isLoading,
+      bool isReady,
+      bool hasNext,
+      List<MemoWithDoramaModel> memoItems});
+}
+
+/// @nodoc
+class _$MemoTlStateDataCopyWithImpl<$Res>
+    implements $MemoTlStateDataCopyWith<$Res> {
+  _$MemoTlStateDataCopyWithImpl(this._value, this._then);
+
+  final MemoTlStateData _value;
+  // ignore: unused_field
+  final $Res Function(MemoTlStateData) _then;
+
+  @override
+  $Res call({
+    Object? isLoading = freezed,
+    Object? isReady = freezed,
+    Object? hasNext = freezed,
+    Object? memoItems = freezed,
+  }) {
+    return _then(_value.copyWith(
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isReady: isReady == freezed
+          ? _value.isReady
+          : isReady // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNext: hasNext == freezed
+          ? _value.hasNext
+          : hasNext // ignore: cast_nullable_to_non_nullable
+              as bool,
+      memoItems: memoItems == freezed
+          ? _value.memoItems
+          : memoItems // ignore: cast_nullable_to_non_nullable
+              as List<MemoWithDoramaModel>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$MemoTlStateDataCopyWith<$Res>
+    implements $MemoTlStateDataCopyWith<$Res> {
+  factory _$MemoTlStateDataCopyWith(
+          _MemoTlStateData value, $Res Function(_MemoTlStateData) then) =
+      __$MemoTlStateDataCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {bool isLoading,
+      bool isReady,
+      bool hasNext,
+      List<MemoWithDoramaModel> memoItems});
+}
+
+/// @nodoc
+class __$MemoTlStateDataCopyWithImpl<$Res>
+    extends _$MemoTlStateDataCopyWithImpl<$Res>
+    implements _$MemoTlStateDataCopyWith<$Res> {
+  __$MemoTlStateDataCopyWithImpl(
+      _MemoTlStateData _value, $Res Function(_MemoTlStateData) _then)
+      : super(_value, (v) => _then(v as _MemoTlStateData));
+
+  @override
+  _MemoTlStateData get _value => super._value as _MemoTlStateData;
+
+  @override
+  $Res call({
+    Object? isLoading = freezed,
+    Object? isReady = freezed,
+    Object? hasNext = freezed,
+    Object? memoItems = freezed,
+  }) {
+    return _then(_MemoTlStateData(
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isReady: isReady == freezed
+          ? _value.isReady
+          : isReady // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasNext: hasNext == freezed
+          ? _value.hasNext
+          : hasNext // ignore: cast_nullable_to_non_nullable
+              as bool,
+      memoItems: memoItems == freezed
+          ? _value.memoItems
+          : memoItems // ignore: cast_nullable_to_non_nullable
+              as List<MemoWithDoramaModel>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_MemoTlStateData implements _MemoTlStateData {
+  _$_MemoTlStateData(
+      {this.isLoading = false,
+      this.isReady = true,
+      this.hasNext = true,
+      this.memoItems = const []});
+
+  @JsonKey()
+  @override
+  final bool isLoading;
+  @JsonKey()
+  @override
+  final bool isReady;
+  @JsonKey()
+  @override
+  final bool hasNext;
+  @JsonKey()
+  @override
+  final List<MemoWithDoramaModel> memoItems;
+
+  @override
+  String toString() {
+    return 'MemoTlStateData(isLoading: $isLoading, isReady: $isReady, hasNext: $hasNext, memoItems: $memoItems)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _MemoTlStateData &&
+            const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
+            const DeepCollectionEquality().equals(other.isReady, isReady) &&
+            const DeepCollectionEquality().equals(other.hasNext, hasNext) &&
+            const DeepCollectionEquality().equals(other.memoItems, memoItems));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(isLoading),
+      const DeepCollectionEquality().hash(isReady),
+      const DeepCollectionEquality().hash(hasNext),
+      const DeepCollectionEquality().hash(memoItems));
+
+  @JsonKey(ignore: true)
+  @override
+  _$MemoTlStateDataCopyWith<_MemoTlStateData> get copyWith =>
+      __$MemoTlStateDataCopyWithImpl<_MemoTlStateData>(this, _$identity);
+}
+
+abstract class _MemoTlStateData implements MemoTlStateData {
+  factory _MemoTlStateData(
+      {bool isLoading,
+      bool isReady,
+      bool hasNext,
+      List<MemoWithDoramaModel> memoItems}) = _$_MemoTlStateData;
+
+  @override
+  bool get isLoading;
+  @override
+  bool get isReady;
+  @override
+  bool get hasNext;
+  @override
+  List<MemoWithDoramaModel> get memoItems;
+  @override
+  @JsonKey(ignore: true)
+  _$MemoTlStateDataCopyWith<_MemoTlStateData> get copyWith =>
+      throw _privateConstructorUsedError;
+}

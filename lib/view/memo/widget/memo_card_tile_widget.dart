@@ -1,61 +1,47 @@
 import 'package:brain_dump/config/category_config.dart';
+import 'package:brain_dump/model/memo_with_dorama_model.dart';
 import 'package:brain_dump/util/tool_util.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../model/db/db.dart';
-import '../../../view_model/dorama/dorama_provider.dart';
 
-class MemoCardTileWidget extends HookConsumerWidget {
-  final MemoData memo;
+class MemoCardTileWidget extends StatelessWidget {
+  final MemoWithDoramaModel data;
   final VoidCallback onTap;
 
   const MemoCardTileWidget({
     Key? key,
-    required this.memo,
+    required this.data,
     required this.onTap,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(doramaDetailProvider(memo.dId)).when(
-          data: (dorama) {
-            if (dorama is DoramaData) {
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: onTap,
-                child: Container(
-                  height: 100,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        blurRadius: 16,
-                        color: Colors.black12,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  alignment: Alignment.center,
-                  child: _card(
-                    dorama: dorama,
-                    memo: memo,
-                  ),
-                ),
-              );
-            }
-            return Container();
-          },
-          error: (error, _) => Container(),
-          loading: () => Container(),
-        );
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        height: 100,
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              blurRadius: 16,
+              color: Colors.black12,
+            ),
+          ],
+          borderRadius: BorderRadius.circular(5),
+        ),
+        alignment: Alignment.center,
+        child: _card(data),
+      ),
+    );
   }
 
-  Widget _card({required DoramaData dorama, required MemoData memo}) {
+  Widget _card(MemoWithDoramaModel data) {
     return Column(
       children: <Widget>[
         SizedBox(
@@ -69,9 +55,10 @@ class MemoCardTileWidget extends HookConsumerWidget {
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 child: Text(
-                  memo.title ?? '',
+                  data.memo.title ?? '',
                   style: TextStyle(
-                    color: ToolUtil.getMemoCategory(memo.categoryId)!.color,
+                    color:
+                        ToolUtil.getMemoCategory(data.memo.categoryId)!.color,
                   ),
                 ),
               ),
@@ -83,7 +70,7 @@ class MemoCardTileWidget extends HookConsumerWidget {
           padding: const EdgeInsets.all(10),
           child: Align(
             alignment: FractionalOffset.topLeft,
-            child: _getTitle(dorama, memo.categoryId),
+            child: _getTitle(data.dorama, data.memo.categoryId),
           ),
         ),
         Container(
@@ -91,7 +78,7 @@ class MemoCardTileWidget extends HookConsumerWidget {
           child: Align(
             alignment: FractionalOffset.bottomRight,
             child: Text(
-              ToolUtil.convertDate(memo.updatedAt),
+              ToolUtil.convertDate(data.memo.updatedAt),
               style: const TextStyle(
                 fontSize: 10,
                 fontFamily: "NotoSerifJP-SemiBold",

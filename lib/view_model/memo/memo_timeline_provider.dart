@@ -1,14 +1,14 @@
-import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/model/freezed/memo_model.dart';
+import 'package:brain_dump/model/memo_with_dorama_model.dart';
 import 'package:brain_dump/repository/memo_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class MemoTimelineNotifier extends StateNotifier<MemoStateData> {
-  MemoTimelineNotifier() : super(MemoStateData(memoItems: [])) {
+class MemoTimelineNotifier extends StateNotifier<MemoTlStateData> {
+  MemoTimelineNotifier() : super(MemoTlStateData(memoItems: [])) {
     fetchData();
   }
 
-  final MemoRepository _repository = MemoRepository();
+  final MemoRepository _memoRepository = MemoRepository();
 
   static const _limit = 20;
   int _page = 0;
@@ -18,11 +18,12 @@ class MemoTimelineNotifier extends StateNotifier<MemoStateData> {
   ///
   Future<void> fetchData() async {
     state = state.copyWith(isLoading: true);
-    final List<MemoData> items = await _repository.fetch(
+    final List<MemoWithDoramaModel> items = await _memoRepository.fetch(
       offset: _page * _limit,
       limit: _limit,
     );
-    final List<MemoData> newItems = [...state.memoItems, ...items];
+
+    final List<MemoWithDoramaModel> newItems = [...state.memoItems, ...items];
 
     if (items.length % _limit != 0 || items.isEmpty) {
       state = state.copyWith(hasNext: false);

@@ -1,3 +1,5 @@
+import 'package:brain_dump/model/memo_with_dorama_model.dart';
+
 import '../model/db/db.dart';
 
 class MemoRepository {
@@ -13,7 +15,8 @@ class MemoRepository {
   Future<void> update(MemoData data) => _db.updateMemo(data);
   Future<void> delete(int id) => _db.deleteMemo(id);
   Future<void> deleteAll() => _db.deleteAllMemo();
-  Future<List<MemoData>> fetch({required int offset, required int limit}) =>
+  Future<List<MemoWithDoramaModel>> fetch(
+          {required int offset, required int limit}) =>
       _db.fetchMemo(offset: offset, limit: limit);
   Future<void> deleteByDId(int id) => _db.deleteMemoByDId(id);
 }

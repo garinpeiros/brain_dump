@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:brain_dump/model/memo_with_dorama_model.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
@@ -72,8 +73,6 @@ class MyDatabase extends _$MyDatabase {
           ..limit(limit, offset: offset)
           ..orderBy([(t) => OrderingTerm.desc(t.id)]))
         .get();
-
-    //return (select(dorama)..limit(limit, offset: offset)).get();
   }
 
   ///
@@ -120,14 +119,42 @@ class MyDatabase extends _$MyDatabase {
   ///
   /// メモデータを取得
   ///
-  Future<List<MemoData>> fetchMemo({
+  Future<List<MemoWithDoramaModel>> fetchMemo({
     required int offset,
     required int limit,
-  }) {
+  }) async {
+    final query = select(memo).join([
+      leftOuterJoin(dorama, dorama.id.equalsExp(memo.dId)),
+    ])
+      ..limit(limit, offset: offset);
+    query.orderBy([OrderingTerm.desc(memo.id)]);
+
+    var rows = await query.get();
+
+    return rows
+        .map((e) => MemoWithDoramaModel(
+              e.readTable(memo),
+              e.readTable(dorama),
+            ))
+        .toList();
+    /*
+    return items.map((rows) {
+      return rows.map((row) {
+        return MemoWithDoramaModel(
+          row.readTable(memo),
+          row.readTableOrNull(dorama),
+        );
+      }).toList();
+
+
+     */
+    /*
     return (select(memo)
           ..limit(limit, offset: offset)
           ..orderBy([(t) => OrderingTerm.desc(t.id)]))
         .get();
+
+     */
   }
 
   //全削除(メモ)

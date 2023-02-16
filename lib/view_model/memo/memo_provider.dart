@@ -5,9 +5,7 @@ import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
-  MemoDatabaseNotifier({
-    required DoramaData dorama,
-  }) : super(MemoStateData()) {
+  MemoDatabaseNotifier({required DoramaData dorama}) : super(MemoStateData()) {
     fetchByDorama(dorama.id);
   }
 

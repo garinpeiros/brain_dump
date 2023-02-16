@@ -1,5 +1,4 @@
 import 'package:brain_dump/view/memo/widget/memo_card_tile_widget.dart';
-import 'package:brain_dump/widget/enpty_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../util/tool_util.dart';
 import '../../view_model/memo/memo_timeline_provider.dart';
+import '../../widget/enpty_widget.dart';
 
 class MemoListView extends ConsumerStatefulWidget {
   const MemoListView({super.key});
@@ -76,7 +76,7 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
       ),
       itemCount: items.length,
       itemBuilder: (context, index) => MemoCardTileWidget(
-        memo: items[index],
+        data: items[index],
         onTap: () {},
       ),
     );
