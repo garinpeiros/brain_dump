@@ -7,9 +7,13 @@ class MemoRepository {
   }
 
   Future<List<MemoData>> fetchDataByDorama(int dId) =>
-      _db.fetchDataByDorama(dId);
+      _db.fetchMemoByDorama(dId);
 
-  Future<void> writeData(MemoCompanion data) => _db.writeMemo(data);
-  Future<void> updateData(MemoData data) => _db.updateMemo(data);
-  Future<void> deleteData(int id) => _db.deleteMemo(id);
+  Future<void> write(MemoCompanion data) => _db.writeMemo(data);
+  Future<void> update(MemoData data) => _db.updateMemo(data);
+  Future<void> delete(int id) => _db.deleteMemo(id);
+  Future<void> deleteAll() => _db.deleteAllMemo();
+  Future<List<MemoData>> fetch({required int offset, required int limit}) =>
+      _db.fetchMemo(offset: offset, limit: limit);
+  Future<void> deleteByDId(int id) => _db.deleteMemoByDId(id);
 }

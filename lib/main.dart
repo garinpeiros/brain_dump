@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'NotoSerifJP-SemiBold',
         primarySwatch: Colors.blue,
       ),
       home: TopView(),

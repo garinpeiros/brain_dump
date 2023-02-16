@@ -28,9 +28,10 @@
   "debug": "デバッグ",
   "memo": "メモ",
   "notice_memo": "内容を簡潔に",
-  "please_memo": "「＋」ボタンをタップして\\nこのドラマのカードを登録しましょう。",
+  "please_memo": "「＋」ボタンをタップして、このストーリーのカードを登録しましょう。",
   "alert_memo": "メモを入力して下さい",
   "content": "補足",
   "notice_content": "詳細な情報を記載",
-  "alert_content": "補足内容を入力して下さい"
+  "alert_content": "補足内容を入力して下さい",
+  "please_timeline": "ストーリーリストからカードリストに移動してカードを登録しましょう。"
 }

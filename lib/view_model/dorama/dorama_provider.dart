@@ -4,18 +4,20 @@ import 'package:brain_dump/config/category_config.dart';
 import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/model/freezed/dorama_model.dart';
 import 'package:brain_dump/repository/dorama_repository.dart';
+import 'package:brain_dump/repository/memo_repository.dart';
 import 'package:drift/drift.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
   final DoramaRepository _repository = DoramaRepository();
 
+  final MemoRepository _memoRepository = MemoRepository();
+
   DoramaDatabaseNotifier() : super(DoramaStateData(doramaItems: [])) {
     fetchData();
   }
 
-  static const _limit = 10;
+  static const _limit = 20;
   int _page = 0;
 
   ///
@@ -32,7 +34,7 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
       updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
     );
     state = state.copyWith(isLoading: true);
-    await _repository.writeData(entry);
+    await _repository.write(entry);
     refresh();
   }
 
@@ -42,6 +44,7 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
   deleteData(DoramaData data) async {
     state = state.copyWith(isLoading: true);
     await _repository.delete(data.id);
+    await _memoRepository.deleteByDId(data.id);
     refresh();
   }
 
@@ -71,7 +74,8 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
   /// データ全削除
   ///
   Future<void> deleteAll() async {
-    _repository.deleteAll();
+    await _repository.deleteAll();
+    await _memoRepository.deleteAll();
     state = state.copyWith(doramaItems: []);
   }
 
@@ -80,9 +84,6 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
   ///
   Future<void> fetchData() async {
     state = state.copyWith(isLoading: true);
-
-    debugPrint((_page * _limit).toString());
-
     final List<DoramaData> items = await _repository.fetchData(
       offset: _page * _limit,
       limit: _limit,
@@ -112,7 +113,7 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
         createdAt: Value(DateTime.now().millisecondsSinceEpoch),
         updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
       );
-      await _repository.writeData(item);
+      await _repository.write(item);
     }
     fetchData();
   }
@@ -120,3 +121,11 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
 
 final doramaDatabaseProvider =
     StateNotifierProvider((ref) => DoramaDatabaseNotifier());
+
+///
+/// ID指定でデータを取得
+///
+final doramaDetailProvider = FutureProvider.family.autoDispose((ref, int id) {
+  final DoramaRepository repository = DoramaRepository();
+  return repository.fetchById(id);
+});

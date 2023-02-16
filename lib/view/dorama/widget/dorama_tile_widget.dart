@@ -4,18 +4,19 @@ import 'package:brain_dump/util/tool_util.dart';
 import 'package:brain_dump/view/dorama/dorama_form_view.dart';
 import 'package:brain_dump/view/dorama/widget/dorama_delete_dialog_widget.dart';
 import 'package:brain_dump/view/memo/memo_slide_view.dart';
-import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DoramaTileWidget extends StatelessWidget {
   final DoramaData data;
-  final DoramaDatabaseNotifier provider;
+  final Function delete;
+  //final DoramaDatabaseNotifier provider;
   const DoramaTileWidget({
     Key? key,
     required this.data,
-    required this.provider,
+    required this.delete,
+    //required this.provider,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -102,8 +103,9 @@ class DoramaTileWidget extends StatelessWidget {
         builder: (BuildContext context) {
           return DoramaDeleteDialogWidget(
             data: data,
-            action: () => {
-              provider.deleteData(data),
+            action: () async {
+              delete();
+              //await provider.deleteData(data);
             },
           );
         },

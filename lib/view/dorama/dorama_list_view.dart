@@ -1,5 +1,7 @@
+import 'package:brain_dump/util/tool_util.dart';
 import 'package:brain_dump/view/dorama/widget/dorama_tile_widget.dart';
 import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
+import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
 import 'package:brain_dump/widget/enpty_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +34,8 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
       if (_listScrollController.offset >=
               _listScrollController.position.maxScrollExtent &&
           !_listScrollController.position.outOfRange) {
-        _showLoadingSnackBar(context);
+        //_showLoadingSnackBar(context);
+        ToolUtil.showLoadingSnackBar(context);
         provider.fetchData();
       }
     }
@@ -76,7 +79,10 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
       itemCount: items.length,
       itemBuilder: (context, index) => DoramaTileWidget(
         data: items[index],
-        provider: provider,
+        delete: () {
+          provider.deleteData(items[index]);
+          ref.refresh(memoTimelineProvider);
+        },
       ),
     );
   }
@@ -91,16 +97,5 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
         );
       },
     );
-  }
-
-  void _showLoadingSnackBar(BuildContext context) {
-    var snackBar = SnackBar(
-        content: Container(
-          height: 50,
-          alignment: Alignment.center,
-          child: Text("loading".tr()),
-        ),
-        duration: const Duration(seconds: 1));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

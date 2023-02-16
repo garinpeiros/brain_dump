@@ -71,6 +71,13 @@ class MyDatabase extends _$MyDatabase {
     return (select(dorama)..limit(limit, offset: offset)).get();
   }
 
+  ///
+  /// ID指定でデータを取得
+  ///
+  Future<DoramaData> fetchDoramaById(int id) {
+    return (select(dorama)..where((tbl) => tbl.id.equals(id))).getSingle();
+  }
+
   //追加(ドラマ)
   Future writeDorama(DoramaCompanion data) => into(dorama).insert(data);
 
@@ -88,9 +95,9 @@ class MyDatabase extends _$MyDatabase {
   Future<List<MemoData>> readAllMemo() => select(memo).get();
 
   ///
-  /// ドラマID単位でデータを取得
+  /// ドラマID単位でメモデータを取得
   ///
-  Future<List<MemoData>> fetchDataByDorama(int dId) => (select(memo)
+  Future<List<MemoData>> fetchMemoByDorama(int dId) => (select(memo)
         ..where((tbl) => tbl.dId.equals(dId))
         ..orderBy([(t) => OrderingTerm.desc(t.id)]))
       .get();
@@ -104,6 +111,23 @@ class MyDatabase extends _$MyDatabase {
   //削除(メモ）
   Future deleteMemo(int id) =>
       (delete(memo)..where((tbl) => tbl.id.equals(id))).go();
+
+  ///
+  /// メモデータを取得
+  ///
+  Future<List<MemoData>> fetchMemo({
+    required int offset,
+    required int limit,
+  }) {
+    return (select(memo)..limit(limit, offset: offset)).get();
+  }
+
+  //全削除(メモ)
+  Future deleteAllMemo() => delete(memo).go();
+
+  //dId指定でメモを削除
+  Future deleteMemoByDId(int id) =>
+      (delete(memo)..where((tbl) => tbl.dId.equals(id))).go();
 }
 
 LazyDatabase _openConnection() {

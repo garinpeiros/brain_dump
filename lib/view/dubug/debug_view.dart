@@ -1,3 +1,4 @@
+import 'package:brain_dump/view_model/memo/memo_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';

@@ -36,7 +36,7 @@ class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
       updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
     );
     state = state.copyWith(isLoading: true);
-    await _repository.writeData(entry);
+    await _repository.write(entry);
     state = state.copyWith(isLoading: false);
     refresh(dId: data.dId);
   }
@@ -46,7 +46,7 @@ class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
   ///
   Future<void> updateData(MemoData data) async {
     state = state.copyWith(isLoading: true);
-    await _repository.updateData(data);
+    await _repository.update(data);
     state = state.copyWith(isLoading: false);
     refresh(dId: data.dId);
   }
@@ -56,7 +56,7 @@ class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
   ///
   deleteData(MemoData data) async {
     state = state.copyWith(isLoading: true);
-    await _repository.deleteData(data.id);
+    await _repository.delete(data.id);
     refresh(dId: data.dId);
   }
 
