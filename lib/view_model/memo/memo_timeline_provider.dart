@@ -34,6 +34,12 @@ class MemoTimelineNotifier extends StateNotifier<MemoStateData> {
     );
     _page++;
   }
+
+  Future<void> refresh() async {
+    _page = 0;
+    state = state.copyWith(memoItems: []);
+    await fetchData();
+  }
 }
 
 final memoTimelineProvider =

@@ -1,6 +1,7 @@
 import 'package:brain_dump/config/category_config.dart';
 import 'package:brain_dump/model/freezed/memo_model.dart';
 import 'package:brain_dump/model/select_item_model.dart';
+import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class MemoFormView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(memoDatabaseProvider(dorama));
     final provider = ref.watch(memoDatabaseProvider(dorama).notifier);
+    final timelineProvider = ref.watch(memoTimelineProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,6 +46,7 @@ class MemoFormView extends HookConsumerWidget {
       body: _buildForm(
         context: context,
         provider: provider,
+        timelineProvider: timelineProvider,
       ),
     );
   }
@@ -51,6 +54,7 @@ class MemoFormView extends HookConsumerWidget {
   Widget _buildForm({
     required BuildContext context,
     required MemoDatabaseNotifier provider,
+    required MemoTimelineNotifier timelineProvider,
   }) {
     TempMemoData temp = TempMemoData();
     if (_isEdit()) {
@@ -188,8 +192,8 @@ class MemoFormView extends HookConsumerWidget {
                 );
                 provider.updateData(update);
               } else {
-                print("DoramaID:" + temp.dId.toString());
                 provider.writeData(temp);
+                timelineProvider.refresh();
               }
               Navigator.of(context).pop(true);
             }

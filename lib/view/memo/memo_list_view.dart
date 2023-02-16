@@ -40,6 +40,8 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
   Widget build(BuildContext context) {
     ref.watch(memoTimelineProvider);
     final provider = ref.watch(memoTimelineProvider.notifier);
+
+    print("ItemsLength；" + provider.state.memoItems.length.toString());
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(
@@ -63,6 +65,7 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
   ///カード一覧
   Widget _cardList(MemoTimelineNotifier provider) {
     final items = provider.state.memoItems;
+    //print("ItemsLength；" + items.length.toString());
     if (items.isEmpty) {
       return EmptyWidget(message: "please_timeline".tr());
     }

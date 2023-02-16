@@ -104,8 +104,7 @@ class DoramaTileWidget extends StatelessWidget {
           return DoramaDeleteDialogWidget(
             data: data,
             action: () async {
-              delete();
-              //await provider.deleteData(data);
+              await delete();
             },
           );
         },

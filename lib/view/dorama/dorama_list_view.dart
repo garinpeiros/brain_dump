@@ -45,6 +45,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
   Widget build(BuildContext context) {
     ref.watch(doramaDatabaseProvider);
     final provider = ref.watch(doramaDatabaseProvider.notifier);
+    final timelineProvider = ref.watch(memoTimelineProvider.notifier);
     List<DoramaData> items = provider.state.doramaItems;
 
     return Scaffold(
@@ -63,7 +64,11 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: _buildList(items: items, provider: provider),
+      body: _buildList(
+        items: items,
+        provider: provider,
+        timelineProvider: timelineProvider,
+      ),
       floatingActionButton: _addButton(context),
     );
   }
@@ -71,6 +76,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
   Widget _buildList({
     required List<DoramaData> items,
     required DoramaDatabaseNotifier provider,
+    required MemoTimelineNotifier timelineProvider,
   }) {
     if (items.isEmpty) return EmptyWidget(message: "notice_dorama".tr());
 
@@ -79,9 +85,9 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
       itemCount: items.length,
       itemBuilder: (context, index) => DoramaTileWidget(
         data: items[index],
-        delete: () {
-          provider.deleteData(items[index]);
-          ref.refresh(memoTimelineProvider);
+        delete: () async {
+          await provider.deleteData(items[index]);
+          await timelineProvider.refresh();
         },
       ),
     );
