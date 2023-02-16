@@ -1,5 +1,6 @@
 import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/view/memo/widget/memo_card_widget.dart';
+import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:brain_dump/view_model/memo/memo_provider.dart';
 import 'package:brain_dump/widget/enpty_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,6 +20,8 @@ class MemoSlideView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(memoDatabaseProvider(dorama));
     final provider = ref.watch(memoDatabaseProvider(dorama).notifier);
+    final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
+
     List<MemoData> items = provider.state.memoItems;
 
     List<Widget> textSliders = [];
@@ -28,7 +31,10 @@ class MemoSlideView extends HookConsumerWidget {
             (item) => MemoCardWidget(
               memo: item,
               dorama: dorama,
-              delete: () => {provider.deleteData(item)},
+              delete: () {
+                provider.deleteData(item);
+                doramaProvider.refresh();
+              },
             ),
           )
           .toList();

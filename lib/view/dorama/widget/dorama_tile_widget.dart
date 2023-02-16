@@ -59,7 +59,6 @@ class DoramaTileWidget extends StatelessWidget {
               ),
             );
           },
-          //title: Text(data.title + "($count)"),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,7 +67,6 @@ class DoramaTileWidget extends StatelessWidget {
               MemoGageWidget(currentCount: count, maxCount: 50),
             ],
           ),
-          //trailing: const Icon(Icons.more_horiz),
           trailing: GestureDetector(
             onTap: () => _action(context),
             behavior: HitTestBehavior.opaque,

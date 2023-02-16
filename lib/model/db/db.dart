@@ -72,11 +72,12 @@ class MyDatabase extends _$MyDatabase {
   }) async {
     final amountMemos = memo.id.count();
 
-    final query = select(dorama).join(
-        [innerJoin(memo, memo.dId.equalsExp(dorama.id), useColumns: false)]);
+    final query = select(dorama).join([
+      leftOuterJoin(memo, memo.dId.equalsExp(dorama.id), useColumns: false)
+    ]);
     query
       ..addColumns([amountMemos])
-      ..groupBy([memo.dId])
+      ..groupBy([dorama.id])
       ..limit(limit, offset: offset);
     query.orderBy([OrderingTerm.desc(dorama.id)]);
 

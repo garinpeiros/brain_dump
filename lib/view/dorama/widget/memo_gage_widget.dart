@@ -20,20 +20,11 @@ class MemoGageWidget extends StatelessWidget {
               value: currentCount / maxCount,
               valueColor:
                   AlwaysStoppedAnimation(getCurrentHpColor(currentCount)),
-              backgroundColor: Colors.grey,
+              backgroundColor: Colors.black12,
               minHeight: 2,
             ),
           ),
         ),
-        /*
-        Text(
-          '${currentCount.toString().padLeft(4, '  ')}/$maxCount',
-          style: TextStyle(
-            fontSize: 10,
-          ),
-        ),
-
-         */
       ],
     );
   }
