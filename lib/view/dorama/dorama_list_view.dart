@@ -40,7 +40,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
 
   @override
   Widget build(BuildContext context) {
-    final state = ref.watch(doramaDatabaseProvider);
+    ref.watch(doramaDatabaseProvider);
     final provider = ref.watch(doramaDatabaseProvider.notifier);
     List<DoramaData> items = provider.state.doramaItems;
 
@@ -67,7 +67,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
 
   Widget _buildList({
     required List<DoramaData> items,
-    required DoramaDatabseNotifier provider,
+    required DoramaDatabaseNotifier provider,
   }) {
     if (items.isEmpty) return EmptyWidget(message: "notice_dorama".tr());
 

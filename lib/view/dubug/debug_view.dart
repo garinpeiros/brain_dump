@@ -8,12 +8,12 @@ import '../../view_model/dorama/dorama_provider.dart';
 class DebugView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(doramaDatabaseProvider);
+    ref.watch(doramaDatabaseProvider);
     final provider = ref.watch(doramaDatabaseProvider.notifier);
     return _main(provider);
   }
 
-  Widget _main(DoramaDatabseNotifier provider) {
+  Widget _main(DoramaDatabaseNotifier provider) {
     return Container(
       alignment: Alignment.center,
       child: Column(

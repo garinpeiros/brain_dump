@@ -3,7 +3,7 @@ import '../model/db/db.dart';
 class MemoRepository {
   late MyDatabase _db;
   MemoRepository() {
-    _db = MyDatabase();
+    _db = MyDatabase.getInstance();
   }
 
   Future<List<MemoData>> fetchDataByDorama(int dId) =>

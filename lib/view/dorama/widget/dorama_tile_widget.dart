@@ -3,6 +3,7 @@ import 'package:brain_dump/model/select_item_model.dart';
 import 'package:brain_dump/util/tool_util.dart';
 import 'package:brain_dump/view/dorama/dorama_form_view.dart';
 import 'package:brain_dump/view/dorama/widget/dorama_delete_dialog_widget.dart';
+import 'package:brain_dump/view/memo/memo_slide_view.dart';
 import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/material.dart';
 
 class DoramaTileWidget extends StatelessWidget {
   final DoramaData data;
-  final DoramaDatabseNotifier provider;
+  final DoramaDatabaseNotifier provider;
   const DoramaTileWidget({
     Key? key,
     required this.data,
@@ -44,7 +45,14 @@ class DoramaTileWidget extends StatelessWidget {
             ),
           ),
         ),
-        onTap: () => {},
+        onTap: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MemoSlideView(dorama: data),
+            ),
+          );
+        },
         title: Text(data.title),
         //trailing: const Icon(Icons.more_horiz),
         trailing: GestureDetector(

@@ -1,22 +1,30 @@
-import 'package:brain_dump/model/db/db.dart';
-import 'package:brain_dump/model/freezed/dorama_model.dart';
+import 'package:brain_dump/config/category_config.dart';
+import 'package:brain_dump/model/freezed/memo_model.dart';
 import 'package:brain_dump/model/select_item_model.dart';
-import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../config/category_config.dart';
+import '../../model/db/db.dart';
+import '../../view_model/memo/memo_provider.dart';
 
-class DoramaFormView extends HookConsumerWidget {
-  final DoramaData? data;
-  const DoramaFormView({Key? key, this.data}) : super(key: key);
+class MemoFormView extends HookConsumerWidget {
+  final _formKey = GlobalKey<FormState>();
+  final MemoData? editMemo;
+  final DoramaData dorama;
+
+  MemoFormView({
+    Key? key,
+    this.editMemo,
+    required this.dorama,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(doramaDatabaseProvider);
-    final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
+    ref.watch(memoDatabaseProvider(dorama));
+    final provider = ref.watch(memoDatabaseProvider(dorama).notifier);
+
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(
@@ -26,32 +34,39 @@ class DoramaFormView extends HookConsumerWidget {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          _isEdit() ? "edit_dorama".tr() : "add_dorama".tr(),
+          "card_list".tr(),
           style: const TextStyle(
             color: Colors.black,
           ),
         ),
         automaticallyImplyLeading: true,
       ),
-      body: _buildForm(context, doramaProvider),
+      body: _buildForm(
+        context: context,
+        provider: provider,
+      ),
     );
   }
 
-  bool _isEdit() => data != null;
-
-  Widget _buildForm(BuildContext context, DoramaDatabaseNotifier provider) {
-    final key = GlobalKey<FormState>();
-    TempDoramaData temp = TempDoramaData();
-
+  Widget _buildForm({
+    required BuildContext context,
+    required MemoDatabaseNotifier provider,
+  }) {
+    TempMemoData temp = TempMemoData();
     if (_isEdit()) {
-      temp = temp.copyWith(categoryId: data!.categoryId);
-      temp = temp.copyWith(title: data!.title);
+      temp = temp.copyWith(
+        title: editMemo!.title,
+        content: editMemo!.content,
+        categoryId: editMemo!.categoryId,
+        dId: dorama.id,
+      );
+    } else {
+      temp = temp.copyWith(dId: dorama.id);
     }
-
     return ListView(
       children: [
         Form(
-          key: key,
+          key: _formKey,
           child: Column(
             children: <Widget>[
               Padding(
@@ -64,18 +79,17 @@ class DoramaFormView extends HookConsumerWidget {
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        hintText: "category".tr(),
-                        icon: const Icon(Icons.category),
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.category),
                       ),
                       value: _isEdit()
-                          ? doramaCategoryItems.firstWhere(
-                              (element) => element.id == data!.categoryId)
+                          ? memoCategoryItems.firstWhere(
+                              (element) => element.id == editMemo!.categoryId)
                           : null,
                       onChanged: (value) {
                         temp = temp.copyWith(categoryId: value!.id);
                       },
-                      items: doramaCategoryItems.map((SelectItemModel value) {
+                      items: memoCategoryItems.map((SelectItemModel value) {
                         return DropdownMenuItem<SelectItemModel>(
                           value: value,
                           child: Text(value.name),
@@ -97,57 +111,95 @@ class DoramaFormView extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "title".tr(),
+                      "memo".tr(),
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: "product_name".tr(),
-                        icon: const Icon(Icons.bookmark_border),
+                        hintText: "notice_memo".tr(),
+                        icon: const Icon(Icons.note),
                       ),
-                      initialValue: _isEdit() ? data!.title : '',
+                      initialValue: _isEdit() ? editMemo!.title : '',
                       validator: (value) {
                         if (value == '') {
-                          return "alert_title".tr();
+                          return "alert_memo".tr();
                         }
                         return null;
-                      },
-                      onSaved: (value) {
-                        temp = temp.copyWith(title: value);
                       },
                       onChanged: (value) {
                         temp = temp.copyWith(title: value);
                       },
-                    )
+                      onSaved: (value) {
+                        temp = temp.copyWith(title: value!);
+                      },
+                    ),
                   ],
                 ),
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "content".tr(),
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        hintText: "notice_content".tr(),
+                        icon: const Icon(Icons.playlist_add),
+                      ),
+                      maxLines: null,
+                      minLines: 10,
+                      initialValue: _isEdit() ? editMemo!.content : '',
+                      validator: (value) {
+                        if (value == '') {
+                          return "alert_content".tr();
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        temp = temp.copyWith(content: value);
+                      },
+                      onSaved: (value) {
+                        temp = temp.copyWith(content: value!);
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
         _buildAddButton(
+          context: context,
           action: () {
-            if (key.currentState!.validate()) {
+            if (_formKey.currentState!.validate()) {
               if (_isEdit()) {
-                DoramaData update = DoramaData(
-                  id: data!.id,
+                MemoData update = MemoData(
+                  id: editMemo!.id,
+                  dId: editMemo!.dId,
                   categoryId: temp.categoryId,
                   title: temp.title,
-                  createdAt: data!.createdAt,
+                  content: temp.content,
+                  createdAt: editMemo!.createdAt,
                   updatedAt: DateTime.now().millisecondsSinceEpoch,
                 );
                 provider.updateData(update);
               } else {
+                print("DoramaID:" + temp.dId.toString());
                 provider.writeData(temp);
               }
               Navigator.of(context).pop(true);
             }
           },
-          context: context,
         ),
       ],
     );
   }
+
+  bool _isEdit() => editMemo != null;
 
   Widget _buildAddButton({
     required Function action,

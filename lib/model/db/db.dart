@@ -48,6 +48,12 @@ class Memo extends Table {
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
+  static final MyDatabase _instance = MyDatabase();
+
+  static MyDatabase getInstance() {
+    return _instance;
+  }
+
   @override
   // TODO: implement schemaVersion
   int get schemaVersion => 1;
@@ -84,8 +90,10 @@ class MyDatabase extends _$MyDatabase {
   ///
   /// ドラマID単位でデータを取得
   ///
-  Future<List<MemoData>> fetchDataByDorama(int dId) =>
-      (select(memo)..where((tbl) => tbl.dId.equals(dId))).get();
+  Future<List<MemoData>> fetchDataByDorama(int dId) => (select(memo)
+        ..where((tbl) => tbl.dId.equals(dId))
+        ..orderBy([(t) => OrderingTerm.desc(t.id)]))
+      .get();
 
   //追加(メモ）
   Future writeMemo(MemoCompanion data) => into(memo).insert(data);

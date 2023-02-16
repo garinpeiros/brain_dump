@@ -8,10 +8,10 @@ import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
+class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
   final DoramaRepository _repository = DoramaRepository();
 
-  DoramaDatabseNotifier() : super(DoramaStateData(doramaItems: [])) {
+  DoramaDatabaseNotifier() : super(DoramaStateData(doramaItems: [])) {
     fetchData();
   }
 
@@ -119,4 +119,4 @@ class DoramaDatabseNotifier extends StateNotifier<DoramaStateData> {
 }
 
 final doramaDatabaseProvider =
-    StateNotifierProvider((ref) => DoramaDatabseNotifier());
+    StateNotifierProvider((ref) => DoramaDatabaseNotifier());

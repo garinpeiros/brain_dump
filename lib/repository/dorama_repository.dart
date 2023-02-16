@@ -3,7 +3,7 @@ import 'package:brain_dump/model/db/db.dart';
 class DoramaRepository {
   late MyDatabase _db;
   DoramaRepository() {
-    _db = MyDatabase();
+    _db = MyDatabase.getInstance();
   }
 
   Future<List<DoramaData>> fetchData({
