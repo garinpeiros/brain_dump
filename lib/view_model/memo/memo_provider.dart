@@ -19,7 +19,6 @@ class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
   Future<void> fetchByDorama(int dId) async {
     state = state.copyWith(isLoading: true);
     final List<MemoData> items = await _repository.fetchDataByDorama(dId);
-    print("MemoItems:" + items.length.toString());
     state = state.copyWith(memoItems: items, isLoading: false);
   }
 

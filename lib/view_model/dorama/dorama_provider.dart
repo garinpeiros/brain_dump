@@ -17,7 +17,7 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
     fetchData();
   }
 
-  static const _limit = 20;
+  static const _limit = 10;
   int _page = 0;
 
   ///
@@ -113,7 +113,19 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaStateData> {
         createdAt: Value(DateTime.now().millisecondsSinceEpoch),
         updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
       );
-      await _repository.write(item);
+      int dId = await _repository.write(item);
+
+      for (var j = 0; j < 10; j++) {
+        final memo = MemoCompanion(
+          title: Value('Item no. $j'),
+          content: Value('Item no. $j'),
+          dId: Value(dId),
+          categoryId: Value(Random().nextInt(memoCategoryItems.length) + 1),
+          createdAt: Value(DateTime.now().millisecondsSinceEpoch),
+          updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
+        );
+        await _memoRepository.write(memo);
+      }
     }
     fetchData();
   }

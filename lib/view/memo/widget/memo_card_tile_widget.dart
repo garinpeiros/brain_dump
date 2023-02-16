@@ -1,5 +1,6 @@
 import 'package:brain_dump/config/category_config.dart';
 import 'package:brain_dump/util/tool_util.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,8 +22,7 @@ class MemoCardTileWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(doramaDetailProvider(memo.dId)).when(
           data: (dorama) {
-            if (dorama != null && dorama is DoramaData) {
-              print("ok!!");
+            if (dorama is DoramaData) {
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: onTap,
@@ -105,15 +105,19 @@ class MemoCardTileWidget extends HookConsumerWidget {
 
   Widget _getTitle(DoramaData dorama, int cId) {
     final category =
-        doramaCategoryItems.firstWhere((element) => element.id == cId);
+        doramaCategoryItems.firstWhereOrNull((element) => element.id == cId);
+
+    final String name = (category != null) ? category.name : '';
+    final Color color = (category != null) ? category.color : Colors.black;
+
     return RichText(
       text: TextSpan(
         text: dorama.title ?? '',
         style: const TextStyle(color: Colors.black, fontSize: 15),
         children: <TextSpan>[
           TextSpan(
-            text: ' / ${category.name}',
-            style: TextStyle(color: category.color, fontSize: 10),
+            text: ' / $name',
+            style: TextStyle(color: color, fontSize: 10),
           ),
         ],
       ),

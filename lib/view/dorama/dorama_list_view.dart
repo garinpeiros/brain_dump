@@ -1,4 +1,3 @@
-import 'package:brain_dump/util/tool_util.dart';
 import 'package:brain_dump/view/dorama/widget/dorama_tile_widget.dart';
 import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
@@ -10,6 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../model/db/db.dart';
+import '../../util/tool_util.dart';
 import 'dorama_form_view.dart';
 
 class DoramaListView extends ConsumerStatefulWidget {
@@ -34,7 +34,6 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
       if (_listScrollController.offset >=
               _listScrollController.position.maxScrollExtent &&
           !_listScrollController.position.outOfRange) {
-        //_showLoadingSnackBar(context);
         ToolUtil.showLoadingSnackBar(context);
         provider.fetchData();
       }

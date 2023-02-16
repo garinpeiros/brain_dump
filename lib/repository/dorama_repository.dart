@@ -15,7 +15,7 @@ class DoramaRepository {
   Future<void> update(DoramaData data) => _db.updateDorama(data);
   Future<void> delete(int id) => _db.deleteDrama(id);
   Future<void> deleteAll() => _db.deleteAllDorama();
-  Future<void> write(DoramaCompanion data) => _db.writeDorama(data);
+  Future<int> write(DoramaCompanion data) => _db.writeDorama(data);
 
   Future<DoramaData> fetchById(int id) => _db.fetchDoramaById(id);
 }

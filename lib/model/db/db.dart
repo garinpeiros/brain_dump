@@ -68,7 +68,12 @@ class MyDatabase extends _$MyDatabase {
     required int offset,
     required int limit,
   }) {
-    return (select(dorama)..limit(limit, offset: offset)).get();
+    return (select(dorama)
+          ..limit(limit, offset: offset)
+          ..orderBy([(t) => OrderingTerm.desc(t.id)]))
+        .get();
+
+    //return (select(dorama)..limit(limit, offset: offset)).get();
   }
 
   ///
@@ -79,7 +84,7 @@ class MyDatabase extends _$MyDatabase {
   }
 
   //追加(ドラマ)
-  Future writeDorama(DoramaCompanion data) => into(dorama).insert(data);
+  Future<int> writeDorama(DoramaCompanion data) => into(dorama).insert(data);
 
   //更新（ドラマ）
   Future updateDorama(DoramaData data) => update(dorama).replace(data);
@@ -119,7 +124,10 @@ class MyDatabase extends _$MyDatabase {
     required int offset,
     required int limit,
   }) {
-    return (select(memo)..limit(limit, offset: offset)).get();
+    return (select(memo)
+          ..limit(limit, offset: offset)
+          ..orderBy([(t) => OrderingTerm.desc(t.id)]))
+        .get();
   }
 
   //全削除(メモ)

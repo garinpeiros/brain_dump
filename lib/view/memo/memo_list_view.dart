@@ -17,6 +17,7 @@ class MemoListView extends ConsumerStatefulWidget {
 }
 
 class _MemoListViewState extends ConsumerState<MemoListView> {
+  final _scrollThreshold = 200.0;
   final ScrollController _listScrollController = ScrollController();
 
   @override
@@ -28,10 +29,11 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
   void _scrollListener() {
     final provider = ref.read(memoTimelineProvider.notifier);
     if (provider.state.isLoading == false && provider.state.hasNext == true) {
-      if (_listScrollController.offset >=
-              _listScrollController.position.maxScrollExtent &&
-          !_listScrollController.position.outOfRange) {
+      final maxScroll = _listScrollController.position.maxScrollExtent;
+      final currentScroll = _listScrollController.position.pixels;
+      if (maxScroll - currentScroll <= _scrollThreshold) {
         ToolUtil.showLoadingSnackBar(context);
+        provider.fetchData();
       }
     }
   }
@@ -41,7 +43,6 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
     ref.watch(memoTimelineProvider);
     final provider = ref.watch(memoTimelineProvider.notifier);
 
-    print("ItemsLength；" + provider.state.memoItems.length.toString());
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(
@@ -65,11 +66,11 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
   ///カード一覧
   Widget _cardList(MemoTimelineNotifier provider) {
     final items = provider.state.memoItems;
-    //print("ItemsLength；" + items.length.toString());
     if (items.isEmpty) {
       return EmptyWidget(message: "please_timeline".tr());
     }
     return GridView.builder(
+      controller: _listScrollController,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
       ),
