@@ -93,6 +93,18 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaTlStateData> {
   }
 
   ///
+  /// 保持メモ件数をカウントダウン
+  ///
+  Future<void> countDown(int id) async {
+    state = state.copyWith(isLoading: true);
+    List<DoramaWithCountModel> items = state.doramaItems;
+    int index = items.indexWhere((element) => element.dorama.id == id);
+    items[index] =
+        DoramaWithCountModel(items[index].dorama, items[index].count - 1);
+    state = state.copyWith(isLoading: false, doramaItems: items);
+  }
+
+  ///
   /// データ全削除
   ///
   Future<void> deleteAll() async {

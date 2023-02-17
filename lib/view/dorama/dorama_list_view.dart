@@ -52,10 +52,6 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(
-          Icons.all_inclusive,
-          color: Colors.black87,
-        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(

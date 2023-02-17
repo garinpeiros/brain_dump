@@ -27,7 +27,23 @@ class Memo extends Table {
   IntColumn get updatedAt => integer()();
 }
 
-@DriftDatabase(tables: [Dorama, Memo])
+class LinkTag extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get title => text().withDefault(const Constant(''))();
+  IntColumn get colorId => integer()();
+  IntColumn get createdAt => integer()();
+  IntColumn get updatedAt => integer()();
+}
+
+class LinkTagRelation extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get tagId => integer()();
+  IntColumn get memoId => integer()();
+  IntColumn get createdAt => integer()();
+  IntColumn get updatedAt => integer()();
+}
+
+@DriftDatabase(tables: [Dorama, Memo, LinkTag, LinkTagRelation])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
@@ -38,8 +54,22 @@ class MyDatabase extends _$MyDatabase {
   }
 
   @override
-  // TODO: implement schemaVersion
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from == 1) {
+          await m.createTable(linkTag);
+          await m.createTable(linkTagRelation);
+        }
+      },
+    );
+  }
 
   //全てのドラマデータを取得
   Future<List<DoramaData>> readAllDorama() => select(dorama).get();
