@@ -9,6 +9,8 @@ import 'package:brain_dump/repository/memo_repository.dart';
 import 'package:drift/drift.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../config/constant_config.dart';
+
 class DoramaDatabaseNotifier extends StateNotifier<DoramaTlStateData> {
   final DoramaRepository _repository = DoramaRepository();
 
@@ -18,7 +20,7 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaTlStateData> {
     fetchData();
   }
 
-  static const _limit = 10;
+  static const _limit = dataLimit;
   int _page = 0;
 
   ///

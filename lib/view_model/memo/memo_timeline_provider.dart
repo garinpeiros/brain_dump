@@ -4,6 +4,8 @@ import 'package:brain_dump/model/memo_with_dorama_model.dart';
 import 'package:brain_dump/repository/memo_repository.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../config/constant_config.dart';
+
 class MemoTimelineNotifier extends StateNotifier<MemoTlStateData> {
   MemoTimelineNotifier() : super(MemoTlStateData(memoItems: [])) {
     fetchData();
@@ -11,7 +13,7 @@ class MemoTimelineNotifier extends StateNotifier<MemoTlStateData> {
 
   final MemoRepository _memoRepository = MemoRepository();
 
-  static const _limit = 20;
+  static const _limit = dataLimit;
   int _page = 0;
 
   ///

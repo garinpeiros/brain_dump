@@ -1,6 +1,5 @@
 import 'package:brain_dump/config/enum_config.dart';
 import 'package:brain_dump/view/dorama/dorama_list_view.dart';
-import 'package:brain_dump/view/dubug/debug_view.dart';
 import 'package:brain_dump/view/memo/memo_list_view.dart';
 import 'package:brain_dump/view_model/top/bottom_navigation_bar_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -9,13 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../statistics/statistics_view.dart';
+
 class TopView extends HookConsumerWidget {
   TopView({super.key});
 
   final _views = [
     const DoramaListView(),
     const MemoListView(),
-    DebugView(),
+    StatisticsView(),
   ];
   List<BottomTabItem> get _items => BottomTabItem.values;
 
