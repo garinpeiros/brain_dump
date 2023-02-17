@@ -27,18 +27,30 @@ class _MemoPageViewState extends ConsumerState<MemoPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.white,
-          title: Text(
-            _doramaName,
-            style: const TextStyle(
-              color: Colors.black,
-            ),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text(
+          _doramaName,
+          style: const TextStyle(
+            color: Colors.black,
           ),
-          automaticallyImplyLeading: false,
         ),
-        body: _main());
+        automaticallyImplyLeading: false,
+      ),
+      body: _main(),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'back',
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.arrow_back,
+          color: Colors.black54,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop(true);
+        },
+      ),
+    );
   }
 
   Widget _main() {

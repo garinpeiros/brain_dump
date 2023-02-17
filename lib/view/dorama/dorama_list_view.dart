@@ -88,7 +88,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
       itemBuilder: (context, index) => DoramaTileWidget(
         data: items[index].dorama,
         delete: () async {
-          await provider.deleteData(items[index].dorama);
+          await provider.delete(items[index].dorama);
           await timelineProvider.refresh();
         },
         count: items[index].count,

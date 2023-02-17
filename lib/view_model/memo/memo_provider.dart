@@ -23,7 +23,7 @@ class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
   ///
   /// データ登録
   ///
-  Future<void> writeData(TempMemoData data) async {
+  Future<void> write(TempMemoData data) async {
     MemoCompanion entry = MemoCompanion(
       title: Value(data.title),
       content: Value(data.content),
@@ -41,7 +41,7 @@ class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
   ///
   /// データ更新
   ///
-  Future<void> updateData(MemoData data) async {
+  Future<void> update(MemoData data) async {
     state = state.copyWith(isLoading: true);
     await _repository.update(data);
     state = state.copyWith(isLoading: false);
@@ -51,7 +51,7 @@ class MemoDatabaseNotifier extends StateNotifier<MemoStateData> {
   ///
   /// データ削除
   ///
-  deleteData(MemoData data) async {
+  Future<void> delete(MemoData data) async {
     state = state.copyWith(isLoading: true);
     await _repository.delete(data.id);
     refresh(dId: data.dId);
@@ -66,3 +66,8 @@ final memoDatabaseProvider = StateNotifierProvider.family
     .autoDispose<MemoDatabaseNotifier, MemoStateData, DoramaData>(
   (ref, dorama) => MemoDatabaseNotifier(dorama: dorama),
 );
+
+final memoCountProvider = FutureProvider.autoDispose((ref) {
+  final MemoRepository repository = MemoRepository();
+  return repository.count();
+});

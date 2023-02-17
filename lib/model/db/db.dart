@@ -9,14 +9,6 @@ import 'package:path_provider/path_provider.dart';
 
 part 'db.g.dart';
 
-/*
-  String title;
-  int c_id;
-  int created_at;
-  int updated_at;
-  String documentId;
- */
-
 class Dorama extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get categoryId => integer()();
@@ -24,17 +16,6 @@ class Dorama extends Table {
   IntColumn get createdAt => integer()();
   IntColumn get updatedAt => integer()();
 }
-
-/*
-  String d_id;
-  String title;
-  String content;
-  int c_id;
-  int created_at;
-  int updated_at;
-  String documentId;
-  Future<Dorama> dorama;
- */
 
 class Memo extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -88,12 +69,6 @@ class MyDatabase extends _$MyDatabase {
               e.read(amountMemos),
             ))
         .toList();
-    /*
-    return (select(dorama)
-          ..limit(limit, offset: offset)
-          ..orderBy([(t) => OrderingTerm.desc(t.id)]))
-        .get();
-     */
   }
 
   ///
@@ -159,24 +134,6 @@ class MyDatabase extends _$MyDatabase {
               e.readTable(dorama),
             ))
         .toList();
-    /*
-    return items.map((rows) {
-      return rows.map((row) {
-        return MemoWithDoramaModel(
-          row.readTable(memo),
-          row.readTableOrNull(dorama),
-        );
-      }).toList();
-
-
-     */
-    /*
-    return (select(memo)
-          ..limit(limit, offset: offset)
-          ..orderBy([(t) => OrderingTerm.desc(t.id)]))
-        .get();
-
-     */
   }
 
   //全削除(メモ)
@@ -185,6 +142,15 @@ class MyDatabase extends _$MyDatabase {
   //dId指定でメモを削除
   Future deleteMemoByDId(int id) =>
       (delete(memo)..where((tbl) => tbl.dId.equals(id))).go();
+
+  ///
+  /// 登録データをカウント
+  ///
+  Future<int> countMemo() async {
+    var countExp = memo.id.count();
+    final query = selectOnly(memo)..addColumns([countExp]);
+    return await query.map((row) => row.read(countExp)).getSingle();
+  }
 }
 
 LazyDatabase _openConnection() {

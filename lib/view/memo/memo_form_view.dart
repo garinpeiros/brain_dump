@@ -1,6 +1,7 @@
 import 'package:brain_dump/config/category_config.dart';
 import 'package:brain_dump/model/freezed/memo_model.dart';
 import 'package:brain_dump/model/select_item_model.dart';
+import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,8 +27,12 @@ class MemoFormView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(memoDatabaseProvider(dorama));
+    /*
     final provider = ref.watch(memoDatabaseProvider(dorama).notifier);
     final timelineProvider = ref.watch(memoTimelineProvider.notifier);
+    final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
+    
+     */
 
     return Scaffold(
       appBar: AppBar(
@@ -47,16 +52,18 @@ class MemoFormView extends HookConsumerWidget {
       ),
       body: _buildForm(
         context: context,
-        provider: provider,
-        timelineProvider: timelineProvider,
+        ref: ref,
+        //provider: provider,
+        //timelineProvider: timelineProvider,
       ),
     );
   }
 
   Widget _buildForm({
     required BuildContext context,
-    required MemoDatabaseNotifier provider,
-    required MemoTimelineNotifier timelineProvider,
+    required WidgetRef ref,
+    //required MemoDatabaseNotifier provider,
+    //required MemoTimelineNotifier timelineProvider,
   }) {
     TempMemoData temp = TempMemoData();
     if (_isEdit()) {
@@ -184,8 +191,9 @@ class MemoFormView extends HookConsumerWidget {
             _save(
               context: context,
               temp: temp,
-              provider: provider,
-              timelineProvider: timelineProvider,
+              ref: ref,
+              //provider: provider,
+              //timelineProvider: timelineProvider,
             );
           },
         ),
@@ -196,12 +204,17 @@ class MemoFormView extends HookConsumerWidget {
   ///
   /// 保存処理
   ///
-  void _save({
-    required BuildContext context,
-    required TempMemoData temp,
-    required MemoDatabaseNotifier provider,
-    required MemoTimelineNotifier timelineProvider,
-  }) {
+  void _save(
+      {required BuildContext context,
+      required TempMemoData temp,
+      required WidgetRef ref
+      //required MemoDatabaseNotifier provider,
+      //required MemoTimelineNotifier timelineProvider,
+      }) {
+    final provider = ref.watch(memoDatabaseProvider(dorama).notifier);
+    final timelineProvider = ref.watch(memoTimelineProvider.notifier);
+    final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
+
     if (_formKey.currentState!.validate()) {
       if (_isEdit()) {
         MemoData updateData = MemoData(
@@ -213,12 +226,12 @@ class MemoFormView extends HookConsumerWidget {
           createdAt: editMemo!.createdAt,
           updatedAt: DateTime.now().millisecondsSinceEpoch,
         );
-        //provider.updateData(update);
-        print("update!!");
+
         update(updateData);
       } else {
-        provider.writeData(temp);
+        provider.write(temp);
         timelineProvider.refresh();
+        doramaProvider.countUp(temp.dId);
       }
       Navigator.of(context).pop(true);
     }

@@ -136,9 +136,9 @@ class DoramaFormView extends HookConsumerWidget {
                   createdAt: data!.createdAt,
                   updatedAt: DateTime.now().millisecondsSinceEpoch,
                 );
-                provider.updateData(update);
+                provider.update(update);
               } else {
-                provider.writeData(temp);
+                provider.write(temp);
               }
               Navigator.of(context).pop(true);
             }

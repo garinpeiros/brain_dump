@@ -1,18 +1,19 @@
+import 'package:brain_dump/view_model/memo/memo_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class StatisticsView extends StatefulWidget {
+class StatisticsView extends ConsumerStatefulWidget {
   @override
-  State<StatefulWidget> createState() => _StatisticsViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _StatisticsViewState();
 }
 
-class _StatisticsViewState extends State<StatisticsView> {
+class _StatisticsViewState extends ConsumerState<StatisticsView> {
   double _counter = 100;
   Color c = HexColor("#FF8C00");
-  String message = 'starting...';
 
   @override
   void initState() {
@@ -21,6 +22,7 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   @override
   Widget build(BuildContext context) {
+    double counter = 0;
     return Scaffold(
       appBar: AppBar(
         leading: const Icon(
@@ -37,11 +39,23 @@ class _StatisticsViewState extends State<StatisticsView> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: _gauge(),
+      body: _main(),
     );
   }
 
-  Widget _gauge() {
+  Widget _main() {
+    return ref.watch(memoCountProvider).when(
+          data: (data) {
+            return _gauge(data.toDouble());
+          },
+          error: (error, _) {
+            return Container();
+          },
+          loading: () => Container(),
+        );
+  }
+
+  Widget _gauge(double counter) {
     return OrientationBuilder(
       builder: (context, orientation) {
         return GridView.count(
@@ -113,7 +127,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                       axisLineStyle: const AxisLineStyle(thickness: 30),
                       pointers: <GaugePointer>[
                         RangePointer(
-                          value: _counter,
+                          value: counter,
                           width: 30,
                           color: c,
                           enableAnimation: true,
@@ -123,7 +137,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                       annotations: <GaugeAnnotation>[
                         GaugeAnnotation(
                             widget: Text(
-                              "${_counter.toInt()}",
+                              "${counter.toInt()}",
                               style: const TextStyle(
                                   fontSize: 25, fontWeight: FontWeight.bold),
                             ),
@@ -133,9 +147,18 @@ class _StatisticsViewState extends State<StatisticsView> {
                 ],
               ),
             ),
+            _message(),
           ],
         );
       },
+    );
+  }
+
+  Widget _message() {
+    return Container(
+      margin: const EdgeInsets.all(50),
+      alignment: Alignment.center,
+      child: Text("comment1".tr()),
     );
   }
 }

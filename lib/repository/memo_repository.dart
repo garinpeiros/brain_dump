@@ -19,4 +19,5 @@ class MemoRepository {
           {required int offset, required int limit}) =>
       _db.fetchMemo(offset: offset, limit: limit);
   Future<void> deleteByDId(int id) => _db.deleteMemoByDId(id);
+  Future<int> count() => _db.countMemo();
 }

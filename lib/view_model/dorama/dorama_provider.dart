@@ -26,7 +26,7 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaTlStateData> {
   ///
   /// データの書き込み
   ///
-  writeData(TempDoramaData data) async {
+  write(TempDoramaData data) async {
     if (data.title.isEmpty) {
       return;
     }
@@ -44,20 +44,27 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaTlStateData> {
   ///
   /// データ削除
   ///
-  deleteData(DoramaData data) async {
+  delete(DoramaData data) async {
     state = state.copyWith(isLoading: true);
     await _repository.delete(data.id);
     await _memoRepository.deleteByDId(data.id);
-    refresh();
+    List<DoramaWithCountModel> items = state.doramaItems;
+    //保持リストから削除
+    items.removeWhere((element) => element.dorama.id == data.id);
+    state = state.copyWith(isLoading: false, doramaItems: items);
   }
 
   ///
   /// データ更新
   ///
-  updateData(DoramaData data) async {
+  update(DoramaData data) async {
     state = state.copyWith(isLoading: true);
     await _repository.update(data);
-    refresh();
+    //refresh();
+    List<DoramaWithCountModel> items = state.doramaItems;
+    int index = items.indexWhere((element) => element.dorama.id == data.id);
+    items[index] = DoramaWithCountModel(data, items[index].count);
+    state = state.copyWith(isLoading: false, doramaItems: items);
   }
 
   ///
@@ -71,6 +78,18 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaTlStateData> {
     );
     _page = 0;
     fetchData();
+  }
+
+  ///
+  /// 保持メモ件数をカウントアップ
+  ///
+  Future<void> countUp(int id) async {
+    state = state.copyWith(isLoading: true);
+    List<DoramaWithCountModel> items = state.doramaItems;
+    int index = items.indexWhere((element) => element.dorama.id == id);
+    items[index] =
+        DoramaWithCountModel(items[index].dorama, items[index].count + 1);
+    state = state.copyWith(isLoading: false, doramaItems: items);
   }
 
   ///

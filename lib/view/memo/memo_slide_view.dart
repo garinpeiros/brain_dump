@@ -34,12 +34,12 @@ class MemoSlideView extends HookConsumerWidget {
               memo: item,
               dorama: dorama,
               delete: () {
-                provider.deleteData(item);
+                provider.delete(item);
                 doramaProvider.refresh();
                 timelineProvider.refresh();
               },
               update: (value) {
-                provider.updateData(value);
+                provider.update(value);
               },
             ),
           )
