@@ -30,7 +30,7 @@ class _StatisticsViewState extends State<StatisticsView> {
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
-          "card_list".tr(),
+          "graph".tr(),
           style: const TextStyle(
             color: Colors.black,
           ),

@@ -8,6 +8,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../config/constant_config.dart';
 import 'memo_gauge_widget.dart';
 
 class DoramaTileWidget extends StatelessWidget {
@@ -65,7 +66,7 @@ class DoramaTileWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(data.title),
-              MemoGaugeWidget(currentCount: count, maxCount: 50),
+              MemoGaugeWidget(currentCount: count, maxCount: norumaCount),
             ],
           ),
           trailing: GestureDetector(

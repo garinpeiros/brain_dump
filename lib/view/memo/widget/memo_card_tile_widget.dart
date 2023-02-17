@@ -70,7 +70,7 @@ class MemoCardTileWidget extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Align(
             alignment: FractionalOffset.topLeft,
-            child: _getTitle(data.dorama, data.memo.categoryId),
+            child: _getTitle(data.dorama),
           ),
         ),
         Container(
@@ -90,9 +90,9 @@ class MemoCardTileWidget extends StatelessWidget {
     );
   }
 
-  Widget _getTitle(DoramaData dorama, int cId) {
-    final category =
-        doramaCategoryItems.firstWhereOrNull((element) => element.id == cId);
+  Widget _getTitle(DoramaData dorama) {
+    final category = doramaCategoryItems
+        .firstWhereOrNull((element) => element.id == dorama.categoryId);
 
     final String name = (category != null) ? category.name : '';
     final Color color = (category != null) ? category.color : Colors.black;

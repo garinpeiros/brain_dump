@@ -40,7 +40,7 @@ class TopView extends HookConsumerWidget {
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.favorite),
-            label: "debug".tr(),
+            label: "graph".tr(),
           ),
         ],
         onTap: (int selectIndex) {
