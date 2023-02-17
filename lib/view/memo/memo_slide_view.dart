@@ -2,6 +2,7 @@ import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/view/memo/widget/memo_card_widget.dart';
 import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:brain_dump/view_model/memo/memo_provider.dart';
+import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
 import 'package:brain_dump/widget/enpty_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,6 +22,7 @@ class MemoSlideView extends HookConsumerWidget {
     ref.watch(memoDatabaseProvider(dorama));
     final provider = ref.watch(memoDatabaseProvider(dorama).notifier);
     final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
+    final timelineProvider = ref.watch(memoTimelineProvider.notifier);
 
     List<MemoData> items = provider.state.memoItems;
 
@@ -34,6 +36,10 @@ class MemoSlideView extends HookConsumerWidget {
               delete: () {
                 provider.deleteData(item);
                 doramaProvider.refresh();
+                timelineProvider.refresh();
+              },
+              update: (value) {
+                provider.updateData(value);
               },
             ),
           )
@@ -65,7 +71,10 @@ class MemoSlideView extends HookConsumerWidget {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          _addMemoButton(context: context, dorama: dorama),
+          _addMemoButton(
+            context: context,
+            dorama: dorama,
+          ),
           const Padding(
             padding: EdgeInsets.all(10.0),
           ),
@@ -117,6 +126,7 @@ class MemoSlideView extends HookConsumerWidget {
               return MemoFormView(
                 editMemo: null,
                 dorama: dorama,
+                update: (value) {},
               );
             },
           ),

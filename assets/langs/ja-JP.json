@@ -34,5 +34,6 @@
   "notice_content": "詳細な情報を記載",
   "alert_content": "補足内容を入力して下さい",
   "please_timeline": "ストーリーリストからカードリストに移動してカードを登録しましょう。",
-  "loading": "Loading...."
+  "loading": "Loading....",
+  "check": "チェック"
 }

@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class MemoGageWidget extends StatelessWidget {
+class MemoGaugeWidget extends StatelessWidget {
   final int currentCount;
   final int maxCount;
 
-  const MemoGageWidget(
+  const MemoGaugeWidget(
       {super.key, required this.currentCount, required this.maxCount});
 
   @override

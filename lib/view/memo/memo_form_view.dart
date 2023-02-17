@@ -14,11 +14,13 @@ class MemoFormView extends HookConsumerWidget {
   final _formKey = GlobalKey<FormState>();
   final MemoData? editMemo;
   final DoramaData dorama;
+  final Function(MemoData) update;
 
   MemoFormView({
     Key? key,
     this.editMemo,
     required this.dorama,
+    required this.update,
   }) : super(key: key);
 
   @override
@@ -179,28 +181,47 @@ class MemoFormView extends HookConsumerWidget {
         _buildAddButton(
           context: context,
           action: () {
-            if (_formKey.currentState!.validate()) {
-              if (_isEdit()) {
-                MemoData update = MemoData(
-                  id: editMemo!.id,
-                  dId: editMemo!.dId,
-                  categoryId: temp.categoryId,
-                  title: temp.title,
-                  content: temp.content,
-                  createdAt: editMemo!.createdAt,
-                  updatedAt: DateTime.now().millisecondsSinceEpoch,
-                );
-                provider.updateData(update);
-              } else {
-                provider.writeData(temp);
-                timelineProvider.refresh();
-              }
-              Navigator.of(context).pop(true);
-            }
+            _save(
+              context: context,
+              temp: temp,
+              provider: provider,
+              timelineProvider: timelineProvider,
+            );
           },
         ),
       ],
     );
+  }
+
+  ///
+  /// 保存処理
+  ///
+  void _save({
+    required BuildContext context,
+    required TempMemoData temp,
+    required MemoDatabaseNotifier provider,
+    required MemoTimelineNotifier timelineProvider,
+  }) {
+    if (_formKey.currentState!.validate()) {
+      if (_isEdit()) {
+        MemoData updateData = MemoData(
+          id: editMemo!.id,
+          dId: editMemo!.dId,
+          categoryId: temp.categoryId,
+          title: temp.title,
+          content: temp.content,
+          createdAt: editMemo!.createdAt,
+          updatedAt: DateTime.now().millisecondsSinceEpoch,
+        );
+        //provider.updateData(update);
+        print("update!!");
+        update(updateData);
+      } else {
+        provider.writeData(temp);
+        timelineProvider.refresh();
+      }
+      Navigator.of(context).pop(true);
+    }
   }
 
   bool _isEdit() => editMemo != null;

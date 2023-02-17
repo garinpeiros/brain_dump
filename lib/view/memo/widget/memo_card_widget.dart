@@ -10,12 +10,14 @@ class MemoCardWidget extends StatelessWidget {
   final MemoData memo;
   final DoramaData dorama;
   final Function delete;
+  final Function(MemoData) update;
 
   const MemoCardWidget({
     Key? key,
     required this.memo,
     required this.dorama,
     required this.delete,
+    required this.update,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -177,6 +179,7 @@ class MemoCardWidget extends StatelessWidget {
                                   return MemoFormView(
                                     editMemo: memo,
                                     dorama: dorama,
+                                    update: update,
                                   );
                                 },
                               ),

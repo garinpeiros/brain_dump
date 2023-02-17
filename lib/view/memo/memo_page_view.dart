@@ -1,5 +1,6 @@
 import 'package:brain_dump/model/memo_with_dorama_model.dart';
 import 'package:brain_dump/view/memo/widget/memo_card_widget.dart';
+import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,12 +42,20 @@ class _MemoPageViewState extends ConsumerState<MemoPageView> {
   }
 
   Widget _main() {
+    ref.watch(memoTimelineProvider);
+    final provider = ref.watch(memoTimelineProvider.notifier);
+
     List<Widget> list = widget.list
         .map(
           (e) => MemoCardWidget(
             memo: e.memo,
             dorama: e.dorama,
-            delete: () => {},
+            delete: () => {
+              provider.delete(e),
+            },
+            update: (value) {
+              provider.update(value);
+            },
           ),
         )
         .toList();

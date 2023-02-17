@@ -42,10 +42,6 @@ class _MemoListViewState extends ConsumerState<MemoListView> {
     }
   }
 
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     ref.watch(memoTimelineProvider);
