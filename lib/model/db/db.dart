@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:brain_dump/model/dorama_with_count_model.dart';
 import 'package:brain_dump/model/memo_with_dorama_model.dart';
+import 'package:brain_dump/model/tag_with_count_model.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
@@ -154,9 +155,6 @@ class MyDatabase extends _$MyDatabase {
     ])
       ..limit(limit, offset: offset);
     query.orderBy([OrderingTerm.desc(memo.id)]);
-
-    print(query.toString());
-
     var rows = await query.get();
     return rows
         .map((e) => MemoWithDoramaModel(
@@ -180,6 +178,38 @@ class MyDatabase extends _$MyDatabase {
     var countExp = memo.id.count();
     final query = selectOnly(memo)..addColumns([countExp]);
     return await query.map((row) => row.read(countExp)).getSingle();
+  }
+
+  //追加(タグ)
+  Future<int> writeLinkTag(LinkTagCompanion data) => into(linkTag).insert(data);
+
+  ///
+  /// タグデータを取得
+  ///
+  Future<List<TagWithCountModel>> fetchTag({
+    required int offset,
+    required int limit,
+  }) async {
+    final amountMemos = linkTagRelation.id.count();
+
+    final query = select(linkTag).join([
+      leftOuterJoin(
+          linkTagRelation, linkTag.id.equalsExp(linkTagRelation.tagId),
+          useColumns: false)
+    ]);
+    query
+      ..addColumns([amountMemos])
+      ..groupBy([linkTag.id])
+      ..limit(limit, offset: offset);
+    query.orderBy([OrderingTerm.desc(dorama.id)]);
+
+    var rows = await query.get();
+    return rows
+        .map((e) => TagWithCountModel(
+              e.readTable(linkTag),
+              e.read(amountMemos),
+            ))
+        .toList();
   }
 }
 

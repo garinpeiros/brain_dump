@@ -6,6 +6,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
+import '../../config/constant_config.dart';
+
 class StatisticsView extends ConsumerStatefulWidget {
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _StatisticsViewState();
@@ -22,15 +24,16 @@ class _StatisticsViewState extends ConsumerState<StatisticsView> {
 
   @override
   Widget build(BuildContext context) {
-    double counter = 0;
     return Scaffold(
       appBar: AppBar(
+        /*
         leading: const Icon(
           Icons.all_inclusive,
           color: Colors.black,
         ),
+        */
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor(baseColor),
         title: Text(
           "graph".tr(),
           style: const TextStyle(
@@ -53,7 +56,6 @@ class _StatisticsViewState extends ConsumerState<StatisticsView> {
                 _message(),
               ],
             );
-            return _gauge(data.toDouble());
           },
           error: (error, _) {
             return Container();

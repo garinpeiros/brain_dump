@@ -6,8 +6,10 @@ import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../config/constant_config.dart';
 import '../../model/db/db.dart';
 import '../../view_model/memo/memo_provider.dart';
 
@@ -27,12 +29,6 @@ class MemoFormView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(memoDatabaseProvider(dorama));
-    /*
-    final provider = ref.watch(memoDatabaseProvider(dorama).notifier);
-    final timelineProvider = ref.watch(memoTimelineProvider.notifier);
-    final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
-    
-     */
 
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +37,7 @@ class MemoFormView extends HookConsumerWidget {
           color: Colors.black,
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor(baseColor),
         title: Text(
           "card_list".tr(),
           style: const TextStyle(
@@ -53,8 +49,6 @@ class MemoFormView extends HookConsumerWidget {
       body: _buildForm(
         context: context,
         ref: ref,
-        //provider: provider,
-        //timelineProvider: timelineProvider,
       ),
     );
   }
@@ -62,8 +56,6 @@ class MemoFormView extends HookConsumerWidget {
   Widget _buildForm({
     required BuildContext context,
     required WidgetRef ref,
-    //required MemoDatabaseNotifier provider,
-    //required MemoTimelineNotifier timelineProvider,
   }) {
     TempMemoData temp = TempMemoData();
     if (_isEdit()) {

@@ -5,9 +5,11 @@ import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/category_config.dart';
+import '../../config/constant_config.dart';
 
 class DoramaFormView extends HookConsumerWidget {
   final DoramaData? data;
@@ -24,7 +26,7 @@ class DoramaFormView extends HookConsumerWidget {
           color: Colors.black,
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor(baseColor),
         title: Text(
           _isEdit() ? "edit_dorama".tr() : "add_dorama".tr(),
           style: const TextStyle(

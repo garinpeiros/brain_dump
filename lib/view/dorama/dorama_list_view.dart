@@ -8,8 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../config/constant_config.dart';
 import 'dorama_form_view.dart';
 
 class DoramaListView extends ConsumerStatefulWidget {
@@ -53,7 +55,7 @@ class _DoramaListViewState extends ConsumerState<DoramaListView> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor(baseColor),
         title: Text(
           "dorama_list".tr(),
           style: const TextStyle(
