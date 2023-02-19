@@ -54,6 +54,10 @@ class MyDatabase extends _$MyDatabase {
     return _instance;
   }
 
+  LazyDatabase reset() {
+    return _openConnection();
+  }
+
   @override
   int get schemaVersion => 2;
 

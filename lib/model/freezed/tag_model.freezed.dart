@@ -147,12 +147,12 @@ class _$TagTlStateDataTearOff {
       {bool isLoading = false,
       bool isReadyData = true,
       bool hasNext = true,
-      List<TagWithCountModel> doramaItems = const []}) {
+      List<TagWithCountModel> tagItems = const []}) {
     return _TagTlStateData(
       isLoading: isLoading,
       isReadyData: isReadyData,
       hasNext: hasNext,
-      doramaItems: doramaItems,
+      tagItems: tagItems,
     );
   }
 }
@@ -165,7 +165,7 @@ mixin _$TagTlStateData {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isReadyData => throw _privateConstructorUsedError;
   bool get hasNext => throw _privateConstructorUsedError;
-  List<TagWithCountModel> get doramaItems => throw _privateConstructorUsedError;
+  List<TagWithCountModel> get tagItems => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TagTlStateDataCopyWith<TagTlStateData> get copyWith =>
@@ -181,7 +181,7 @@ abstract class $TagTlStateDataCopyWith<$Res> {
       {bool isLoading,
       bool isReadyData,
       bool hasNext,
-      List<TagWithCountModel> doramaItems});
+      List<TagWithCountModel> tagItems});
 }
 
 /// @nodoc
@@ -198,7 +198,7 @@ class _$TagTlStateDataCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? isReadyData = freezed,
     Object? hasNext = freezed,
-    Object? doramaItems = freezed,
+    Object? tagItems = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed
@@ -213,9 +213,9 @@ class _$TagTlStateDataCopyWithImpl<$Res>
           ? _value.hasNext
           : hasNext // ignore: cast_nullable_to_non_nullable
               as bool,
-      doramaItems: doramaItems == freezed
-          ? _value.doramaItems
-          : doramaItems // ignore: cast_nullable_to_non_nullable
+      tagItems: tagItems == freezed
+          ? _value.tagItems
+          : tagItems // ignore: cast_nullable_to_non_nullable
               as List<TagWithCountModel>,
     ));
   }
@@ -232,7 +232,7 @@ abstract class _$TagTlStateDataCopyWith<$Res>
       {bool isLoading,
       bool isReadyData,
       bool hasNext,
-      List<TagWithCountModel> doramaItems});
+      List<TagWithCountModel> tagItems});
 }
 
 /// @nodoc
@@ -251,7 +251,7 @@ class __$TagTlStateDataCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? isReadyData = freezed,
     Object? hasNext = freezed,
-    Object? doramaItems = freezed,
+    Object? tagItems = freezed,
   }) {
     return _then(_TagTlStateData(
       isLoading: isLoading == freezed
@@ -266,9 +266,9 @@ class __$TagTlStateDataCopyWithImpl<$Res>
           ? _value.hasNext
           : hasNext // ignore: cast_nullable_to_non_nullable
               as bool,
-      doramaItems: doramaItems == freezed
-          ? _value.doramaItems
-          : doramaItems // ignore: cast_nullable_to_non_nullable
+      tagItems: tagItems == freezed
+          ? _value.tagItems
+          : tagItems // ignore: cast_nullable_to_non_nullable
               as List<TagWithCountModel>,
     ));
   }
@@ -281,7 +281,7 @@ class _$_TagTlStateData implements _TagTlStateData {
       {this.isLoading = false,
       this.isReadyData = true,
       this.hasNext = true,
-      this.doramaItems = const []});
+      this.tagItems = const []});
 
   @JsonKey()
   @override
@@ -294,11 +294,11 @@ class _$_TagTlStateData implements _TagTlStateData {
   final bool hasNext;
   @JsonKey()
   @override
-  final List<TagWithCountModel> doramaItems;
+  final List<TagWithCountModel> tagItems;
 
   @override
   String toString() {
-    return 'TagTlStateData(isLoading: $isLoading, isReadyData: $isReadyData, hasNext: $hasNext, doramaItems: $doramaItems)';
+    return 'TagTlStateData(isLoading: $isLoading, isReadyData: $isReadyData, hasNext: $hasNext, tagItems: $tagItems)';
   }
 
   @override
@@ -310,8 +310,7 @@ class _$_TagTlStateData implements _TagTlStateData {
             const DeepCollectionEquality()
                 .equals(other.isReadyData, isReadyData) &&
             const DeepCollectionEquality().equals(other.hasNext, hasNext) &&
-            const DeepCollectionEquality()
-                .equals(other.doramaItems, doramaItems));
+            const DeepCollectionEquality().equals(other.tagItems, tagItems));
   }
 
   @override
@@ -320,7 +319,7 @@ class _$_TagTlStateData implements _TagTlStateData {
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(isReadyData),
       const DeepCollectionEquality().hash(hasNext),
-      const DeepCollectionEquality().hash(doramaItems));
+      const DeepCollectionEquality().hash(tagItems));
 
   @JsonKey(ignore: true)
   @override
@@ -333,7 +332,7 @@ abstract class _TagTlStateData implements TagTlStateData {
       {bool isLoading,
       bool isReadyData,
       bool hasNext,
-      List<TagWithCountModel> doramaItems}) = _$_TagTlStateData;
+      List<TagWithCountModel> tagItems}) = _$_TagTlStateData;
 
   @override
   bool get isLoading;
@@ -342,7 +341,7 @@ abstract class _TagTlStateData implements TagTlStateData {
   @override
   bool get hasNext;
   @override
-  List<TagWithCountModel> get doramaItems;
+  List<TagWithCountModel> get tagItems;
   @override
   @JsonKey(ignore: true)
   _$TagTlStateDataCopyWith<_TagTlStateData> get copyWith =>

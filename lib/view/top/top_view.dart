@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:brain_dump/config/enum_config.dart';
 import 'package:brain_dump/view/dorama/dorama_list_view.dart';
+import 'package:brain_dump/view/dubug/debug_view.dart';
 import 'package:brain_dump/view/memo/memo_list_view.dart';
 import 'package:brain_dump/view_model/top/bottom_navigation_bar_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -7,8 +10,61 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
-import '../statistics/statistics_view.dart';
+import '../data_tramsfer/data_transfer_view.dart';
+
+class BeforeView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _BeforeViewState();
+}
+
+class _BeforeViewState extends State<BeforeView> {
+  late StreamSubscription _intentDataStreamSubscription;
+  List<SharedMediaFile>? _sharedFiles;
+  String? _sharedText;
+
+  @override
+  void initState() {
+    super.initState();
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getTextStream().listen((String value) {
+      setState(() {
+        _sharedText = value;
+      });
+    }, onError: (err) {
+      // print("getLinkStream error: $err");
+    });
+    ReceiveSharingIntent.getInitialText().then((String? value) {
+      setState(() {
+        _sharedText = value;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_sharedText != null) {
+      Future.delayed(Duration.zero, () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) {
+              return DataTransferView(dbFilePath: _sharedText!);
+            },
+            fullscreenDialog: true,
+          ),
+        );
+      });
+    }
+    return TopView();
+  }
+
+  @override
+  void dispose() {
+    _intentDataStreamSubscription.cancel();
+    super.dispose();
+  }
+}
 
 class TopView extends HookConsumerWidget {
   TopView({super.key});
@@ -16,7 +72,8 @@ class TopView extends HookConsumerWidget {
   final _views = [
     const DoramaListView(),
     const MemoListView(),
-    StatisticsView(),
+    DebugView(),
+    //StatisticsView(),
   ];
   List<BottomTabItem> get _items => BottomTabItem.values;
 
@@ -25,6 +82,20 @@ class TopView extends HookConsumerWidget {
     final bottomTabState = ref.watch(bottomNavigationBarProvider);
     final bottomTabNotifier = ref.watch(bottomNavigationBarProvider.notifier);
     final int currentIndex = _items.indexOf(bottomTabState.viewItem);
+
+    /*
+    ReceiveSharingIntent.getInitialText().then((String? value) {
+      Fluttertoast.showToast(
+          msg: "This is Center Short Toast",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    });
+
+     */
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(

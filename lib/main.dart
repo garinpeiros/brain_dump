@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'NotoSerifJP-SemiBold',
         primarySwatch: Colors.blue,
       ),
-      home: TopView(),
+      home: BeforeView(),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,

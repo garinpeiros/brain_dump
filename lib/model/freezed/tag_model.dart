@@ -17,6 +17,6 @@ abstract class TagTlStateData with _$TagTlStateData {
     @Default(false) bool isLoading,
     @Default(true) bool isReadyData,
     @Default(true) bool hasNext,
-    @Default([]) List<TagWithCountModel> doramaItems,
+    @Default([]) List<TagWithCountModel> tagItems,
   }) = _TagTlStateData;
 }
