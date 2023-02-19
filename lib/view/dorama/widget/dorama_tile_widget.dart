@@ -2,13 +2,13 @@ import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/model/select_item_model.dart';
 import 'package:brain_dump/util/tool_util.dart';
 import 'package:brain_dump/view/dorama/dorama_form_view.dart';
-import 'package:brain_dump/view/dorama/widget/dorama_delete_dialog_widget.dart';
 import 'package:brain_dump/view/memo/memo_slide_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../config/constant_config.dart';
+import '../../../widget/delete_dialog_widget.dart';
 import 'memo_gauge_widget.dart';
 
 class DoramaTileWidget extends StatelessWidget {
@@ -115,11 +115,11 @@ class DoramaTileWidget extends StatelessWidget {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return DoramaDeleteDialogWidget(
-            data: data,
+          return DeleteDialogWidget(
             action: () async {
               await delete();
             },
+            title: "delete".tr(),
           );
         },
       );

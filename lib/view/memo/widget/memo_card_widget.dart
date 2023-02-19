@@ -1,9 +1,10 @@
 import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/util/tool_util.dart';
-import 'package:brain_dump/view/memo/widget/memo_delete_dialog_widget.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../widget/delete_dialog_widget.dart';
 import '../memo_form_view.dart';
 
 class MemoCardWidget extends StatelessWidget {
@@ -144,9 +145,9 @@ class MemoCardWidget extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return MemoDeleteDialogWidget(
-                                  memo: memo,
+                                return DeleteDialogWidget(
                                   action: delete,
+                                  title: "delete".tr(),
                                 );
                               },
                             );

@@ -3,23 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/db/db.dart';
-import '../../../model/select_item_model.dart';
-import '../../../util/tool_util.dart';
-import '../../dorama/dorama_form_view.dart';
-import '../../dorama/widget/dorama_delete_dialog_widget.dart';
-import '../../memo/memo_slide_view.dart';
 
 class TagTileWidget extends StatelessWidget {
-  final DoramaData data;
+  final LinkTagData data;
   final int count;
   final Function delete;
-  //final DoramaDatabaseNotifier provider;
+
   const TagTileWidget({
     Key? key,
     required this.data,
     required this.count,
     required this.delete,
-    //required this.provider,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -27,37 +21,23 @@ class TagTileWidget extends StatelessWidget {
   }
 
   _tile({
-    required DoramaData data,
+    required LinkTagData data,
     required BuildContext context,
   }) {
-    SelectItemModel? category = ToolUtil.getDoramaCategory(data.categoryId);
-
-    Color color = (category != null) ? category.color : Colors.black;
     return Card(
-      child: Container(
+      child: SizedBox(
         height: 80,
         child: ListTile(
-          leading: Chip(
-            backgroundColor: Colors.transparent,
-            shape: StadiumBorder(
-              side: BorderSide(
-                color: color,
-              ),
-            ),
-            label: Text(
-              (category != null) ? category.name : '',
-              style: TextStyle(
-                color: color,
-              ),
-            ),
-          ),
+          leading: const Text('#'),
           onTap: () async {
+            /*
             await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => MemoSlideView(dorama: data),
               ),
             );
+            */
           },
           title: Text(data.title),
           trailing: GestureDetector(
@@ -88,6 +68,7 @@ class TagTileWidget extends StatelessWidget {
     );
 
     if (result == 'edit') {
+      /*
       await Navigator.push(
         context,
         MaterialPageRoute(
@@ -96,7 +77,9 @@ class TagTileWidget extends StatelessWidget {
           ),
         ),
       );
+       */
     } else if (result == 'delete') {
+      /*
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -108,6 +91,7 @@ class TagTileWidget extends StatelessWidget {
           );
         },
       );
+      */
     }
   }
 

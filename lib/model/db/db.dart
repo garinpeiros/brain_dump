@@ -211,6 +211,18 @@ class MyDatabase extends _$MyDatabase {
             ))
         .toList();
   }
+
+  //追加(タグ）
+  Future<int> writeTag(LinkTagCompanion data) => into(linkTag).insert(data);
+
+  //更新(タグ）
+  Future updateTag(LinkTagData data) => update(linkTag).replace(data);
+
+  //削除(タグ）
+  Future deleteTag(int id) async {
+    (delete(linkTag)..where((tbl) => tbl.id.equals(id))).go();
+    (delete(linkTagRelation)..where((tbl) => tbl.tagId.equals(id))).go();
+  }
 }
 
 LazyDatabase _openConnection() {

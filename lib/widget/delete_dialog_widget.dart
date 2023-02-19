@@ -3,21 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import '../../../model/db/db.dart';
-
-class DoramaDeleteDialogWidget extends StatelessWidget {
-  final DoramaData data;
+class DeleteDialogWidget extends StatelessWidget {
   final Function action;
-  const DoramaDeleteDialogWidget({
+  final String title;
+  const DeleteDialogWidget({
     Key? key,
-    required this.data,
     required this.action,
+    required this.title,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
-      title: Text("delete_dorama".tr()),
+      title: Text(title),
       contentPadding: const EdgeInsets.all(16),
       children: <Widget>[
         Text("confirm_delete".tr()),
