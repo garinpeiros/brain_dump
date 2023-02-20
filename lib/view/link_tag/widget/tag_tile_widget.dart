@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../model/db/db.dart';
+import '../../../widget/delete_dialog_widget.dart';
+import '../tag_form_view.dart';
 
 class TagTileWidget extends StatelessWidget {
   final LinkTagData data;
@@ -27,15 +29,17 @@ class TagTileWidget extends StatelessWidget {
     required BuildContext context,
   }) {
     return Card(
-      child: ListTile(
-        leading: Text(
-          '#',
-          style: TextStyle(
-            color: HexColor(baseColor),
+      child: Container(
+        height: 80,
+        child: ListTile(
+          leading: Text(
+            '#',
+            style: TextStyle(
+              color: HexColor(baseColor),
+            ),
           ),
-        ),
-        onTap: () async {
-          /*
+          onTap: () async {
+            /*
             await Navigator.push(
               context,
               MaterialPageRoute(
@@ -43,12 +47,34 @@ class TagTileWidget extends StatelessWidget {
               ),
             );
             */
-        },
-        title: Text(data.title),
-        trailing: GestureDetector(
-          onTap: () => _action(context),
-          behavior: HitTestBehavior.opaque,
-          child: const Icon(Icons.more_horiz),
+          },
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(data.title),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.crop_square,
+                    color: Colors.black12,
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    count.toString(),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          trailing: GestureDetector(
+            onTap: () => _action(context),
+            behavior: HitTestBehavior.opaque,
+            child: const Icon(Icons.more_horiz),
+          ),
         ),
       ),
     );
@@ -72,30 +98,26 @@ class TagTileWidget extends StatelessWidget {
     );
 
     if (result == 'edit') {
-      /*
       await Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DoramaFormView(
+          builder: (context) => TagFormView(
             data: data,
           ),
         ),
       );
-       */
     } else if (result == 'delete') {
-      /*
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return DoramaDeleteDialogWidget(
-            data: data,
+          return DeleteDialogWidget(
             action: () async {
               await delete();
             },
+            title: "delete_tag".tr(),
           );
         },
       );
-      */
     }
   }
 

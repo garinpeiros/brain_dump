@@ -87,7 +87,6 @@ class _TagListViewState extends ConsumerState<TagListView> {
         data: items[index].tag,
         delete: () async {
           await provider.delete(items[index].tag);
-          await timelineProvider.refresh();
         },
         count: items[index].count,
       ),
