@@ -1,6 +1,4 @@
 import 'package:brain_dump/model/db/db.dart';
-import 'package:brain_dump/model/freezed/dorama_model.dart';
-import 'package:brain_dump/model/select_item_model.dart';
 import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,27 +6,24 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../config/category_config.dart';
 import '../../config/constant_config.dart';
+import '../../model/freezed/tag_model.dart';
+import '../../view_model/tag/tag_provider.dart';
 
-class DoramaFormView extends HookConsumerWidget {
-  final DoramaData? data;
-  const DoramaFormView({Key? key, this.data}) : super(key: key);
+class TagFormView extends HookConsumerWidget {
+  final LinkTagData? data;
+  const TagFormView({Key? key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(doramaDatabaseProvider);
-    final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
+    final tagProvider = ref.watch(tagDatabaseProvider.notifier);
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(
-          Icons.all_inclusive,
-          color: Colors.black,
-        ),
         centerTitle: true,
         backgroundColor: HexColor(baseColor),
         title: Text(
-          _isEdit() ? "edit_dorama".tr() : "add_dorama".tr(),
+          _isEdit() ? "edit_tag".tr() : "add_tag".tr(),
           style: const TextStyle(
             color: Colors.black,
           ),
@@ -46,18 +41,17 @@ class DoramaFormView extends HookConsumerWidget {
           Navigator.of(context).pop(true);
         },
       ),
-      body: _buildForm(context, doramaProvider),
+      body: _buildForm(context, tagProvider),
     );
   }
 
   bool _isEdit() => data != null;
 
-  Widget _buildForm(BuildContext context, DoramaDatabaseNotifier provider) {
+  Widget _buildForm(BuildContext context, TagDatabaseNotifier provider) {
     final key = GlobalKey<FormState>();
-    TempDoramaData temp = TempDoramaData();
+    TempTagData temp = TempTagData();
 
     if (_isEdit()) {
-      temp = temp.copyWith(categoryId: data!.categoryId);
       temp = temp.copyWith(title: data!.title);
     }
 
@@ -73,55 +67,18 @@ class DoramaFormView extends HookConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "category".tr(),
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                    DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        hintText: "category".tr(),
-                        icon: const Icon(Icons.category),
-                      ),
-                      value: _isEdit()
-                          ? doramaCategoryItems.firstWhere(
-                              (element) => element.id == data!.categoryId)
-                          : null,
-                      onChanged: (value) {
-                        temp = temp.copyWith(categoryId: value!.id);
-                      },
-                      items: doramaCategoryItems.map((SelectItemModel value) {
-                        return DropdownMenuItem<SelectItemModel>(
-                          value: value,
-                          child: Text(value.name),
-                        );
-                      }).toList(),
-                      validator: (value) {
-                        if (value == null) {
-                          return "alert_category".tr();
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
                       "title".tr(),
                       style: Theme.of(context).textTheme.subtitle1,
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: "product_name".tr(),
-                        icon: const Icon(Icons.bookmark_border),
+                        hintText: "tag_name".tr(),
+                        icon: const Icon(Icons.tag),
                       ),
                       initialValue: _isEdit() ? data!.title : '',
                       validator: (value) {
                         if (value == '') {
-                          return "alert_title".tr();
+                          return "alert_tag_name".tr();
                         }
                         return null;
                       },
@@ -142,12 +99,12 @@ class DoramaFormView extends HookConsumerWidget {
           action: () {
             if (key.currentState!.validate()) {
               if (_isEdit()) {
-                DoramaData update = DoramaData(
+                LinkTagData update = LinkTagData(
                   id: data!.id,
-                  categoryId: temp.categoryId,
                   title: temp.title,
                   createdAt: data!.createdAt,
                   updatedAt: DateTime.now().millisecondsSinceEpoch,
+                  colorId: 0,
                 );
                 provider.update(update);
               } else {

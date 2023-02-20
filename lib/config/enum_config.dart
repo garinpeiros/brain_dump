@@ -1,5 +1,6 @@
 enum BottomTabItem {
   dorama,
   card,
-  dump,
+  tag,
+  statistics,
 }

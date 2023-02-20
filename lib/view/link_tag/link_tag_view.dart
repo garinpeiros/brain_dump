@@ -1,6 +1,5 @@
-import 'package:brain_dump/model/dorama_with_count_model.dart';
-import 'package:brain_dump/view/dorama/widget/dorama_tile_widget.dart';
-import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
+import 'package:brain_dump/view/link_tag/tag_form_view.dart';
+import 'package:brain_dump/view/link_tag/widget/tag_tile_widget.dart';
 import 'package:brain_dump/view_model/memo/memo_timeline_provider.dart';
 import 'package:brain_dump/widget/enpty_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -12,7 +11,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/constant_config.dart';
-import '../dorama/dorama_form_view.dart';
+import '../../model/tag_with_count_model.dart';
+import '../../view_model/tag/tag_provider.dart';
 
 class TagListView extends ConsumerStatefulWidget {
   const TagListView({super.key});
@@ -31,7 +31,7 @@ class _TagListViewState extends ConsumerState<TagListView> {
   }
 
   void _scrollListener() {
-    final provider = ref.read(doramaDatabaseProvider.notifier);
+    final provider = ref.read(tagDatabaseProvider.notifier);
     if (provider.state.isLoading == false && provider.state.hasNext == true) {
       if (_listScrollController.offset >=
               _listScrollController.position.maxScrollExtent &&
@@ -47,17 +47,17 @@ class _TagListViewState extends ConsumerState<TagListView> {
 
   @override
   Widget build(BuildContext context) {
-    ref.watch(doramaDatabaseProvider);
-    final provider = ref.watch(doramaDatabaseProvider.notifier);
+    ref.watch(tagDatabaseProvider);
+    final provider = ref.watch(tagDatabaseProvider.notifier);
     final timelineProvider = ref.watch(memoTimelineProvider.notifier);
-    List<DoramaWithCountModel> items = provider.state.doramaItems;
+    List<TagWithCountModel> items = provider.state.tagItems;
 
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: HexColor(baseColor),
         title: Text(
-          "dorama_list".tr(),
+          "tag_list".tr(),
           style: const TextStyle(
             color: Colors.black,
           ),
@@ -74,19 +74,19 @@ class _TagListViewState extends ConsumerState<TagListView> {
   }
 
   Widget _buildList({
-    required List<DoramaWithCountModel> items,
-    required DoramaDatabaseNotifier provider,
+    required List<TagWithCountModel> items,
+    required TagDatabaseNotifier provider,
     required MemoTimelineNotifier timelineProvider,
   }) {
-    if (items.isEmpty) return EmptyWidget(message: "notice_dorama".tr());
+    if (items.isEmpty) return EmptyWidget(message: "notice_tag".tr());
 
     return ListView.builder(
       controller: _listScrollController,
       itemCount: items.length,
-      itemBuilder: (context, index) => DoramaTileWidget(
-        data: items[index].dorama,
+      itemBuilder: (context, index) => TagTileWidget(
+        data: items[index].tag,
         delete: () async {
-          await provider.delete(items[index].dorama);
+          await provider.delete(items[index].tag);
           await timelineProvider.refresh();
         },
         count: items[index].count,
@@ -100,7 +100,7 @@ class _TagListViewState extends ConsumerState<TagListView> {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const DoramaFormView()),
+          MaterialPageRoute(builder: (context) => const TagFormView()),
         );
       },
     );

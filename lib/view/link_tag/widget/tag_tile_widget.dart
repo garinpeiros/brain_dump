@@ -1,6 +1,8 @@
+import 'package:brain_dump/config/constant_config.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../../../model/db/db.dart';
 
@@ -25,12 +27,15 @@ class TagTileWidget extends StatelessWidget {
     required BuildContext context,
   }) {
     return Card(
-      child: SizedBox(
-        height: 80,
-        child: ListTile(
-          leading: const Text('#'),
-          onTap: () async {
-            /*
+      child: ListTile(
+        leading: Text(
+          '#',
+          style: TextStyle(
+            color: HexColor(baseColor),
+          ),
+        ),
+        onTap: () async {
+          /*
             await Navigator.push(
               context,
               MaterialPageRoute(
@@ -38,13 +43,12 @@ class TagTileWidget extends StatelessWidget {
               ),
             );
             */
-          },
-          title: Text(data.title),
-          trailing: GestureDetector(
-            onTap: () => _action(context),
-            behavior: HitTestBehavior.opaque,
-            child: const Icon(Icons.more_horiz),
-          ),
+        },
+        title: Text(data.title),
+        trailing: GestureDetector(
+          onTap: () => _action(context),
+          behavior: HitTestBehavior.opaque,
+          child: const Icon(Icons.more_horiz),
         ),
       ),
     );

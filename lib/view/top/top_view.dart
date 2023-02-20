@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:brain_dump/config/enum_config.dart';
 import 'package:brain_dump/view/dorama/dorama_list_view.dart';
-import 'package:brain_dump/view/dubug/debug_view.dart';
+import 'package:brain_dump/view/link_tag/link_tag_view.dart';
 import 'package:brain_dump/view/memo/memo_list_view.dart';
 import 'package:brain_dump/view_model/top/bottom_navigation_bar_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -13,6 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 import '../data_tramsfer/data_transfer_view.dart';
+import '../statistics/statistics_view.dart';
 
 class BeforeView extends StatefulWidget {
   @override
@@ -72,8 +73,9 @@ class TopView extends HookConsumerWidget {
   final _views = [
     const DoramaListView(),
     const MemoListView(),
-    DebugView(),
-    //StatisticsView(),
+    //DebugView(),
+    const TagListView(),
+    StatisticsView(),
   ];
   List<BottomTabItem> get _items => BottomTabItem.values;
 
@@ -83,22 +85,10 @@ class TopView extends HookConsumerWidget {
     final bottomTabNotifier = ref.watch(bottomNavigationBarProvider.notifier);
     final int currentIndex = _items.indexOf(bottomTabState.viewItem);
 
-    /*
-    ReceiveSharingIntent.getInitialText().then((String? value) {
-      Fluttertoast.showToast(
-          msg: "This is Center Short Toast",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
-    });
-
-     */
-
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.blue,
+        type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
@@ -108,6 +98,10 @@ class TopView extends HookConsumerWidget {
           BottomNavigationBarItem(
             icon: const Icon(Icons.crop_square),
             label: "card".tr(),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.tag),
+            label: "tag".tr(),
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.favorite),

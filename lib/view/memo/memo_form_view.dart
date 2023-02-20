@@ -50,6 +50,17 @@ class MemoFormView extends HookConsumerWidget {
         context: context,
         ref: ref,
       ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'back',
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.arrow_back,
+          color: Colors.black54,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop(true);
+        },
+      ),
     );
   }
 

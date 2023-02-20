@@ -8,6 +8,8 @@ import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import '../../config/constant_config.dart';
+
 part 'db.g.dart';
 
 class Dorama extends Table {
@@ -205,7 +207,7 @@ class MyDatabase extends _$MyDatabase {
       ..addColumns([amountMemos])
       ..groupBy([linkTag.id])
       ..limit(limit, offset: offset);
-    query.orderBy([OrderingTerm.desc(dorama.id)]);
+    query.orderBy([OrderingTerm.desc(linkTag.id)]);
 
     var rows = await query.get();
     return rows
@@ -232,7 +234,7 @@ class MyDatabase extends _$MyDatabase {
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, dbFileName));
     return NativeDatabase(file);
   });
 }

@@ -20,12 +20,13 @@ class TagDatabaseNotifier extends StateNotifier<TagTlStateData> {
   ///
   /// データの書き込み
   ///
-  write(LinkTagData data) async {
+  write(TempTagData data) async {
     if (data.title.isEmpty) {
       return;
     }
     LinkTagCompanion entry = LinkTagCompanion(
       title: Value(data.title),
+      colorId: Value(0),
       createdAt: Value(DateTime.now().millisecondsSinceEpoch),
       updatedAt: Value(DateTime.now().millisecondsSinceEpoch),
     );
