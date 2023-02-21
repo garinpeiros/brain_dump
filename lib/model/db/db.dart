@@ -1,7 +1,6 @@
 import 'dart:io';
 
-import 'package:brain_dump/model/memo_with_dorama_model.dart';
-import 'package:brain_dump/model/tag_with_count_model.dart';
+import 'package:brain_dump/dao/tag_dao.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
@@ -49,7 +48,7 @@ class LinkTagRelation extends Table {
 
 @DriftDatabase(
     tables: [Dorama, Memo, LinkTag, LinkTagRelation],
-    daos: [DoramaDao, MemoDao])
+    daos: [DoramaDao, MemoDao, TagDao])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
@@ -80,133 +79,6 @@ class MyDatabase extends _$MyDatabase {
       },
     );
   }
-
-  ///
-  /// ドラマID単位でメモデータを取得
-  ///
-  Future<List<MemoData>> fetchMemoByDorama(int dId) => (select(memo)
-        ..where((tbl) => tbl.dId.equals(dId))
-        ..orderBy([(t) => OrderingTerm.desc(t.id)]))
-      .get();
-
-  ///
-  /// メモデータを取得
-  ///
-  Future<List<MemoWithDoramaModel>> fetchMemo({
-    required int offset,
-    required int limit,
-  }) async {
-    final query = select(memo).join([
-      leftOuterJoin(dorama, dorama.id.equalsExp(memo.dId)),
-    ])
-      ..limit(limit, offset: offset);
-    query.orderBy([OrderingTerm.desc(memo.id)]);
-    var rows = await query.get();
-    return rows
-        .map((e) => MemoWithDoramaModel(
-              e.readTable(memo),
-              e.readTable(dorama),
-            ))
-        .toList();
-  }
-
-  //全削除(メモ)
-  Future deleteAllMemo() => delete(memo).go();
-
-  //dId指定でメモを削除
-  Future deleteMemoByDId(int id) =>
-      (delete(memo)..where((tbl) => tbl.dId.equals(id))).go();
-
-  ///
-  /// 登録データをカウント
-  ///
-  Future<int> countMemo() async {
-    var countExp = memo.id.count();
-    final query = selectOnly(memo)..addColumns([countExp]);
-    return await query.map((row) => row.read(countExp)).getSingle();
-  }
-
-  //追加(タグ)
-  Future<int> writeLinkTag(LinkTagCompanion data) => into(linkTag).insert(data);
-
-  ///
-  /// タグデータを取得
-  ///
-  Future<List<TagWithCountModel>> fetchTag({
-    required int offset,
-    required int limit,
-  }) async {
-    final amountMemos = linkTagRelation.id.count();
-
-    final query = select(linkTag).join([
-      leftOuterJoin(
-          linkTagRelation, linkTag.id.equalsExp(linkTagRelation.tagId),
-          useColumns: false)
-    ]);
-    query
-      ..addColumns([amountMemos])
-      ..groupBy([linkTag.id])
-      ..limit(limit, offset: offset);
-    query.orderBy([OrderingTerm.desc(linkTag.id)]);
-
-    var rows = await query.get();
-    return rows
-        .map((e) => TagWithCountModel(
-              e.readTable(linkTag),
-              e.read(amountMemos),
-            ))
-        .toList();
-  }
-
-  //追加(タグ）
-  Future<int> writeTag(LinkTagCompanion data) => into(linkTag).insert(data);
-
-  //更新(タグ）
-  Future updateTag(LinkTagData data) => update(linkTag).replace(data);
-
-  //削除(タグ）
-  Future deleteTag(int id) async {
-    (delete(linkTag)..where((tbl) => tbl.id.equals(id))).go();
-    (delete(linkTagRelation)..where((tbl) => tbl.tagId.equals(id))).go();
-  }
-
-  ///
-  /// タグ指定でメモデータを取得
-  ///
-  Future<List<MemoWithDoramaModel>> fetchMemoByTag(int tagId) async {
-    final query = select(linkTagRelation).join([
-      innerJoin(memo, memo.id.equalsExp(linkTagRelation.memoId),
-          useColumns: false),
-      innerJoin(dorama, dorama.id.equalsExp(memo.dId), useColumns: false),
-    ])
-      ..where(linkTagRelation.tagId.equals(tagId));
-
-    query.orderBy([OrderingTerm.desc(memo.id)]);
-    var rows = await query.get();
-    return rows
-        .map(
-          (e) => MemoWithDoramaModel(
-            e.readTable(memo),
-            e.readTable(dorama),
-          ),
-        )
-        .toList();
-  }
-
-  ///
-  /// メモデータとタグデータ紐づけ
-  ///
-  Future<void> addTagRelation(LinkTagRelationCompanion data) =>
-      into(linkTagRelation).insert(data);
-
-  ///
-  /// メモデータとタグデータ紐づけ
-  ///
-  Future<void> removeTagRelation({required int memoId, required int tagId}) =>
-      (delete(linkTagRelation)
-            ..where((tbl) => tbl.memoId.equals(memoId))
-            ..where((tbl) => tbl.tagId.equals(tagId)))
-          .go();
 }
 
 LazyDatabase _openConnection() {

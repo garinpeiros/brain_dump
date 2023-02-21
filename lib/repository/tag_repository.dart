@@ -12,9 +12,9 @@ class TagRepository {
     required int offset,
     required int limit,
   }) =>
-      _db.fetchTag(offset: offset, limit: limit);
+      _db.tagDao.fetchData(offset: offset, limit: limit);
 
-  Future<void> update(LinkTagData data) => _db.updateTag(data);
-  Future<void> delete(int id) => _db.deleteTag(id);
-  Future<int> write(LinkTagCompanion data) => _db.writeTag(data);
+  Future<void> update(LinkTagData data) => _db.tagDao.updateData(data);
+  Future<void> delete(int id) => _db.tagDao.deleteData(id);
+  Future<int> write(LinkTagCompanion data) => _db.tagDao.write(data);
 }
