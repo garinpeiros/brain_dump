@@ -24,6 +24,14 @@ class TagMemoDatabaseNotifier extends StateNotifier<TagMemoTlStateData> {
   }
 
   ///
+  /// タグ付けする処理
+  ///
+  Future<void> add(
+      {required int tagId, required MemoWithDoramaModel memo}) async {
+    state = state.copyWith(isLoading: true);
+  }
+
+  ///
   /// データ登録
   ///
 

@@ -170,11 +170,3 @@ class DoramaDatabaseNotifier extends StateNotifier<DoramaTlStateData> {
 
 final doramaDatabaseProvider =
     StateNotifierProvider((ref) => DoramaDatabaseNotifier());
-
-///
-/// ID指定でデータを取得
-///
-final doramaDetailProvider = FutureProvider.family.autoDispose((ref, int id) {
-  final DoramaRepository repository = DoramaRepository();
-  return repository.fetchById(id);
-});

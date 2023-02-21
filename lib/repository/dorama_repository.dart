@@ -11,11 +11,9 @@ class DoramaRepository {
     required int offset,
     required int limit,
   }) =>
-      _db.fetchDorama(offset: offset, limit: limit);
-
-  Future<void> update(DoramaData data) => _db.updateDorama(data);
-  Future<void> delete(int id) => _db.deleteDrama(id);
-  Future<void> deleteAll() => _db.deleteAllDorama();
-  Future<int> write(DoramaCompanion data) => _db.writeDorama(data);
-  Future<DoramaData> fetchById(int id) => _db.fetchDoramaById(id);
+      _db.doramaDao.fetchData(offset: offset, limit: limit);
+  Future<void> update(DoramaData data) => _db.doramaDao.updateData(data);
+  Future<void> delete(int id) => _db.doramaDao.deleteData(id);
+  Future<void> deleteAll() => _db.doramaDao.deleteAll();
+  Future<int> write(DoramaCompanion data) => _db.doramaDao.write(data);
 }

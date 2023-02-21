@@ -1225,6 +1225,8 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   late final $LinkTagTable linkTag = $LinkTagTable(this);
   late final $LinkTagRelationTable linkTagRelation =
       $LinkTagRelationTable(this);
+  late final DoramaDao doramaDao = DoramaDao(this as MyDatabase);
+  late final MemoDao memoDao = MemoDao(this as MyDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

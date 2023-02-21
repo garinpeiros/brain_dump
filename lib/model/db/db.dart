@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:brain_dump/model/dorama_with_count_model.dart';
 import 'package:brain_dump/model/memo_with_dorama_model.dart';
 import 'package:brain_dump/model/tag_with_count_model.dart';
 import 'package:drift/drift.dart';
@@ -9,6 +8,8 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import '../../config/constant_config.dart';
+import '../../dao/dorama_dao.dart';
+import '../../dao/memo_dao.dart';
 
 part 'db.g.dart';
 
@@ -46,7 +47,9 @@ class LinkTagRelation extends Table {
   IntColumn get updatedAt => integer()();
 }
 
-@DriftDatabase(tables: [Dorama, Memo, LinkTag, LinkTagRelation])
+@DriftDatabase(
+    tables: [Dorama, Memo, LinkTag, LinkTagRelation],
+    daos: [DoramaDao, MemoDao])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
@@ -78,59 +81,6 @@ class MyDatabase extends _$MyDatabase {
     );
   }
 
-  //全てのドラマデータを取得
-  Future<List<DoramaData>> readAllDorama() => select(dorama).get();
-
-  ///
-  /// データを取得
-  ///
-  Future<List<DoramaWithCountModel>> fetchDorama({
-    required int offset,
-    required int limit,
-  }) async {
-    final amountMemos = memo.id.count();
-
-    final query = select(dorama).join([
-      leftOuterJoin(memo, memo.dId.equalsExp(dorama.id), useColumns: false)
-    ]);
-    query
-      ..addColumns([amountMemos])
-      ..groupBy([dorama.id])
-      ..limit(limit, offset: offset);
-    query.orderBy([OrderingTerm.desc(dorama.id)]);
-
-    var rows = await query.get();
-    return rows
-        .map((e) => DoramaWithCountModel(
-              e.readTable(dorama),
-              e.read(amountMemos),
-            ))
-        .toList();
-  }
-
-  ///
-  /// ID指定でデータを取得
-  ///
-  Future<DoramaData> fetchDoramaById(int id) {
-    return (select(dorama)..where((tbl) => tbl.id.equals(id))).getSingle();
-  }
-
-  //追加(ドラマ)
-  Future<int> writeDorama(DoramaCompanion data) => into(dorama).insert(data);
-
-  //更新（ドラマ）
-  Future updateDorama(DoramaData data) => update(dorama).replace(data);
-
-  //削除（ドラマ）
-  Future deleteDrama(int id) =>
-      (delete(dorama)..where((tbl) => tbl.id.equals(id))).go();
-
-  //全削除(ドラマ)
-  Future deleteAllDorama() => delete(dorama).go();
-
-  //全てのメモデータを取得
-  Future<List<MemoData>> readAllMemo() => select(memo).get();
-
   ///
   /// ドラマID単位でメモデータを取得
   ///
@@ -138,16 +88,6 @@ class MyDatabase extends _$MyDatabase {
         ..where((tbl) => tbl.dId.equals(dId))
         ..orderBy([(t) => OrderingTerm.desc(t.id)]))
       .get();
-
-  //追加(メモ）
-  Future writeMemo(MemoCompanion data) => into(memo).insert(data);
-
-  //更新(メモ）
-  Future updateMemo(MemoData data) => update(memo).replace(data);
-
-  //削除(メモ）
-  Future deleteMemo(int id) =>
-      (delete(memo)..where((tbl) => tbl.id.equals(id))).go();
 
   ///
   /// メモデータを取得
@@ -252,6 +192,21 @@ class MyDatabase extends _$MyDatabase {
         )
         .toList();
   }
+
+  ///
+  /// メモデータとタグデータ紐づけ
+  ///
+  Future<void> addTagRelation(LinkTagRelationCompanion data) =>
+      into(linkTagRelation).insert(data);
+
+  ///
+  /// メモデータとタグデータ紐づけ
+  ///
+  Future<void> removeTagRelation({required int memoId, required int tagId}) =>
+      (delete(linkTagRelation)
+            ..where((tbl) => tbl.memoId.equals(memoId))
+            ..where((tbl) => tbl.tagId.equals(tagId)))
+          .go();
 }
 
 LazyDatabase _openConnection() {

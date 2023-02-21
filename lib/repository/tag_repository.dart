@@ -17,6 +17,4 @@ class TagRepository {
   Future<void> update(LinkTagData data) => _db.updateTag(data);
   Future<void> delete(int id) => _db.deleteTag(id);
   Future<int> write(LinkTagCompanion data) => _db.writeTag(data);
-
-  Future<DoramaData> fetchById(int id) => _db.fetchDoramaById(id);
 }
