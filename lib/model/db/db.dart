@@ -229,6 +229,29 @@ class MyDatabase extends _$MyDatabase {
     (delete(linkTag)..where((tbl) => tbl.id.equals(id))).go();
     (delete(linkTagRelation)..where((tbl) => tbl.tagId.equals(id))).go();
   }
+
+  ///
+  /// タグ指定でメモデータを取得
+  ///
+  Future<List<MemoWithDoramaModel>> fetchMemoByTag(int tagId) async {
+    final query = select(linkTagRelation).join([
+      innerJoin(memo, memo.id.equalsExp(linkTagRelation.memoId),
+          useColumns: false),
+      innerJoin(dorama, dorama.id.equalsExp(memo.dId), useColumns: false),
+    ])
+      ..where(linkTagRelation.tagId.equals(tagId));
+
+    query.orderBy([OrderingTerm.desc(memo.id)]);
+    var rows = await query.get();
+    return rows
+        .map(
+          (e) => MemoWithDoramaModel(
+            e.readTable(memo),
+            e.readTable(dorama),
+          ),
+        )
+        .toList();
+  }
 }
 
 LazyDatabase _openConnection() {

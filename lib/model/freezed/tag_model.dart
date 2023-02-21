@@ -1,5 +1,7 @@
+import 'package:brain_dump/model/db/db.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../memo_with_dorama_model.dart';
 import '../tag_with_count_model.dart';
 
 part 'tag_model.freezed.dart';
@@ -19,4 +21,20 @@ abstract class TagTlStateData with _$TagTlStateData {
     @Default(true) bool hasNext,
     @Default([]) List<TagWithCountModel> tagItems,
   }) = _TagTlStateData;
+}
+
+@freezed
+abstract class TagMemoTlStateData with _$TagMemoTlStateData {
+  factory TagMemoTlStateData({
+    @Default(false) bool isLoading,
+    @Default([]) List<MemoWithDoramaModel> memoItems,
+  }) = _TagMemoTlStateData;
+}
+
+@freezed
+abstract class MemoTagStateData with _$MemoTagStateData {
+  factory MemoTagStateData({
+    @Default(false) bool isLoading,
+    @Default([]) List<LinkTagData> tagItems,
+  }) = _MemoTagStateData;
 }

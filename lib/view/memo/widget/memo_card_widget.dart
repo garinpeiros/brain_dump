@@ -168,27 +168,47 @@ class MemoCardWidget extends StatelessWidget {
                     vertical: 10.0, horizontal: 20.0),
                 child: Row(
                   children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        child: IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () => {
-                            Navigator.of(context).push<dynamic>(
-                              MaterialPageRoute<dynamic>(
-                                builder: (context) {
-                                  return MemoFormView(
-                                    editMemo: memo,
-                                    dorama: dorama,
-                                    update: update,
-                                  );
-                                },
-                              ),
-                            )
-                          },
-                        ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () => {
+                          Navigator.of(context).push<dynamic>(
+                            MaterialPageRoute<dynamic>(
+                              builder: (context) {
+                                return MemoFormView(
+                                  editMemo: memo,
+                                  dorama: dorama,
+                                  update: update,
+                                );
+                              },
+                            ),
+                          )
+                        },
                       ),
                     ),
+                    const SizedBox(width: 20),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.tag),
+                        onPressed: () => {
+                          /*
+                          Navigator.of(context).push<dynamic>(
+                            MaterialPageRoute<dynamic>(
+                              builder: (context) {
+                                return MemoFormView(
+                                  editMemo: memo,
+                                  dorama: dorama,
+                                  update: update,
+                                );
+                              },
+                            ),
+                          )
+                          */
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),

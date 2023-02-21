@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import '../../../model/db/db.dart';
 import '../../../widget/delete_dialog_widget.dart';
 import '../tag_form_view.dart';
+import '../tag_memo_slide_view.dart';
 
 class TagTileWidget extends StatelessWidget {
   final LinkTagData data;
@@ -29,7 +30,7 @@ class TagTileWidget extends StatelessWidget {
     required BuildContext context,
   }) {
     return Card(
-      child: Container(
+      child: SizedBox(
         height: 80,
         child: ListTile(
           leading: Text(
@@ -39,14 +40,12 @@ class TagTileWidget extends StatelessWidget {
             ),
           ),
           onTap: () async {
-            /*
             await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MemoSlideView(dorama: data),
+                builder: (context) => TagMemoSlideView(tag: data),
               ),
             );
-            */
           },
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
