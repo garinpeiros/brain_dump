@@ -34,6 +34,21 @@ class TagRelationDao extends DatabaseAccessor<MyDatabase>
   }
 
   ///
+  /// メモ指定でタグデータを取得
+  ///
+  Future<List<LinkTagData>> fetchTagByMemo(int memoId) async {
+    final query = select(linkTag).join([
+      innerJoin(linkTagRelation, linkTagRelation.tagId.equalsExp(linkTag.id),
+          useColumns: false)
+    ])
+      ..where(linkTagRelation.memoId.equals(memoId));
+
+    query.orderBy([OrderingTerm.desc(linkTagRelation.tagId)]);
+    var rows = await query.get();
+    return rows.map((e) => e.readTable(linkTag)).toList();
+  }
+
+  ///
   /// メモデータとタグデータ紐づけ
   ///
   Future<int> add(LinkTagRelationCompanion data) =>

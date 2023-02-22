@@ -17,4 +17,5 @@ class TagRepository {
   Future<void> update(LinkTagData data) => _db.tagDao.updateData(data);
   Future<void> delete(int id) => _db.tagDao.deleteData(id);
   Future<int> write(LinkTagCompanion data) => _db.tagDao.write(data);
+  Future<List<LinkTagData>> fetchAll() => _db.tagDao.fetchAll();
 }

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../../widget/delete_dialog_widget.dart';
 import '../memo_form_view.dart';
+import 'memo_tag_dialog_widget.dart';
 
 class MemoCardWidget extends StatelessWidget {
   final MemoData memo;
@@ -192,20 +193,13 @@ class MemoCardWidget extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child: IconButton(
                         icon: const Icon(Icons.tag),
-                        onPressed: () => {
-                          /*
-                          Navigator.of(context).push<dynamic>(
-                            MaterialPageRoute<dynamic>(
-                              builder: (context) {
-                                return MemoFormView(
-                                  editMemo: memo,
-                                  dorama: dorama,
-                                  update: update,
-                                );
-                              },
-                            ),
-                          )
-                          */
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return MemoTagDialogWidget(memo);
+                            },
+                          );
                         },
                       ),
                     )

@@ -41,4 +41,9 @@ class TagDao extends DatabaseAccessor<MyDatabase> with _$TagDaoMixin {
             ))
         .toList();
   }
+
+  ///
+  /// 全てのタグデータを取得
+  ///
+  Future<List<LinkTagData>> fetchAll() => select(linkTag).get();
 }
