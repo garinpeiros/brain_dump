@@ -1,12 +1,37 @@
 import 'package:drift/drift.dart';
 
 import '../model/db/db.dart';
+import '../model/memo_with_dorama_model.dart';
 
 part 'tag_relation_dao.g.dart';
 
 @DriftAccessor(tables: [Dorama, Memo, LinkTag, LinkTagRelation])
-class TagDao extends DatabaseAccessor<MyDatabase> with _$TagDaoMixin {
-  TagDao(MyDatabase db) : super(db);
+class TagRelationDao extends DatabaseAccessor<MyDatabase>
+    with _$TagRelationDaoMixin {
+  TagRelationDao(MyDatabase db) : super(db);
+
+  ///
+  /// タグ指定でメモデータを取得
+  ///
+  Future<List<MemoWithDoramaModel>> fetchMemoByTag(int tagId) async {
+    final query = select(linkTagRelation).join([
+      innerJoin(memo, memo.id.equalsExp(linkTagRelation.memoId),
+          useColumns: false),
+      innerJoin(dorama, dorama.id.equalsExp(memo.dId), useColumns: false),
+    ])
+      ..where(linkTagRelation.tagId.equals(tagId));
+
+    query.orderBy([OrderingTerm.desc(memo.id)]);
+    var rows = await query.get();
+    return rows
+        .map(
+          (e) => MemoWithDoramaModel(
+            e.readTable(memo),
+            e.readTable(dorama),
+          ),
+        )
+        .toList();
+  }
 
   ///
   /// メモデータとタグデータ紐づけ

@@ -1228,6 +1228,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   late final DoramaDao doramaDao = DoramaDao(this as MyDatabase);
   late final MemoDao memoDao = MemoDao(this as MyDatabase);
   late final TagDao tagDao = TagDao(this as MyDatabase);
+  late final TagRelationDao tagRelationDao = TagRelationDao(this as MyDatabase);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

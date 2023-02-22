@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:brain_dump/dao/tag_dao.dart';
+import 'package:brain_dump/dao/tag_relation_dao.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
@@ -46,9 +47,17 @@ class LinkTagRelation extends Table {
   IntColumn get updatedAt => integer()();
 }
 
-@DriftDatabase(
-    tables: [Dorama, Memo, LinkTag, LinkTagRelation],
-    daos: [DoramaDao, MemoDao, TagDao])
+@DriftDatabase(tables: [
+  Dorama,
+  Memo,
+  LinkTag,
+  LinkTagRelation
+], daos: [
+  DoramaDao,
+  MemoDao,
+  TagDao,
+  TagRelationDao,
+])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
