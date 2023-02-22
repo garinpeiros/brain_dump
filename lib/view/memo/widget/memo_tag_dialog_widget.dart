@@ -17,15 +17,21 @@ class MemoTagDialogWidget extends HookConsumerWidget {
     return SimpleDialog(
       contentPadding: const EdgeInsets.all(16),
       children: <Widget>[
-        _main(ref: ref, memo: memo),
+        _main(ref: ref, memo: memo, context: context),
       ],
     );
   }
 
-  Widget _main({required WidgetRef ref, required MemoData memo}) {
+  Widget _main({required WidgetRef ref, required MemoData memo, required BuildContext context}) {
     return ref.watch(tagListFutureProvider).when(
           data: (list) {
-            return _tagList(ref: ref, list: list, memo: memo);
+            return SizedBox(
+              height: MediaQuery.of(context).size.height - 200,
+              child: _tagList(ref: ref, list: list, memo: memo),
+            );
+            return SingleChildScrollView(
+              child: _tagList(ref: ref, list: list, memo: memo),
+            );
           },
           error: (error, _) => Container(),
           loading: () => Container(),
