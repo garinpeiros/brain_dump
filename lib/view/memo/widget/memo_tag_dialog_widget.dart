@@ -22,14 +22,14 @@ class MemoTagDialogWidget extends HookConsumerWidget {
     );
   }
 
-  Widget _main({required WidgetRef ref, required MemoData memo, required BuildContext context}) {
+  Widget _main(
+      {required WidgetRef ref,
+      required MemoData memo,
+      required BuildContext context}) {
     return ref.watch(tagListFutureProvider).when(
           data: (list) {
             return SizedBox(
               height: MediaQuery.of(context).size.height - 200,
-              child: _tagList(ref: ref, list: list, memo: memo),
-            );
-            return SingleChildScrollView(
               child: _tagList(ref: ref, list: list, memo: memo),
             );
           },

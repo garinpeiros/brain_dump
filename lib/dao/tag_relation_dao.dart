@@ -14,22 +14,22 @@ class TagRelationDao extends DatabaseAccessor<MyDatabase>
   /// タグ指定でメモデータを取得
   ///
   Future<List<MemoWithDoramaModel>> fetchMemoByTag(int tagId) async {
-    final query = select(linkTagRelation).join([
-      innerJoin(memo, memo.id.equalsExp(linkTagRelation.memoId),
-          useColumns: false),
-      innerJoin(dorama, dorama.id.equalsExp(memo.dId), useColumns: false),
-    ])
-      ..where(linkTagRelation.tagId.equals(tagId));
+    var inRows = await (select(memo).join([
+      leftOuterJoin(linkTagRelation, linkTagRelation.memoId.equalsExp(memo.id)),
+    ])..where(linkTagRelation.tagId.equals(tagId))).get();
 
+    List<int?> list = inRows.map((e) => e.read(memo.id)).toList();
+
+    final query = select(memo).join([
+      leftOuterJoin(dorama, dorama.id.equalsExp(memo.dId)),
+    ])..where(memo.id.isIn(list));
     query.orderBy([OrderingTerm.desc(memo.id)]);
     var rows = await query.get();
     return rows
-        .map(
-          (e) => MemoWithDoramaModel(
-            e.readTable(memo),
-            e.readTable(dorama),
-          ),
-        )
+        .map((e) => MemoWithDoramaModel(
+      e.readTable(memo),
+      e.readTable(dorama),
+    ))
         .toList();
   }
 
