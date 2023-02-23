@@ -1,6 +1,7 @@
 import 'package:brain_dump/config/constant_config.dart';
 import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/view_model/tag/memo_tag_provider.dart';
+import 'package:brain_dump/view_model/tag/tag_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -49,6 +50,7 @@ class MemoTagDialogWidget extends HookConsumerWidget {
     ref.watch(memoTagTagDatabaseProvider(memo));
     MemoTagDatabaseNotifier provider =
         ref.watch(memoTagTagDatabaseProvider(memo).notifier);
+    TagDatabaseNotifier tagProvider = ref.watch(tagDatabaseProvider.notifier);
 
     var items = provider.state.tagItems;
     var tags = list;
@@ -63,8 +65,10 @@ class MemoTagDialogWidget extends HookConsumerWidget {
               onTap: () {
                 if (isSelected) {
                   provider.remove(tagId: tag.id, memoId: memo.id);
+                  tagProvider.countDown(tag.id);
                 } else {
                   provider.add(tag: tag, memoId: memo.id);
+                  tagProvider.countUp(tag.id);
                 }
               },
               child: AnimatedContainer(

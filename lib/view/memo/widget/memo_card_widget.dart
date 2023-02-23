@@ -13,6 +13,7 @@ class MemoCardWidget extends StatelessWidget {
   final DoramaData dorama;
   final Function delete;
   final Function(MemoData) update;
+  final bool? isShowDoramaTitle;
 
   const MemoCardWidget({
     Key? key,
@@ -20,6 +21,7 @@ class MemoCardWidget extends StatelessWidget {
     required this.dorama,
     required this.delete,
     required this.update,
+    this.isShowDoramaTitle,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -60,6 +62,17 @@ class MemoCardWidget extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: <Widget>[
+                    isShowDoramaTitle != null ?
+                    Container(
+                      margin: const EdgeInsets.all(30.0),
+                      child: Text(
+                        dorama.title,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ) : Container(),
                     Container(
                       margin: const EdgeInsets.all(30.0),
                       child: Text(

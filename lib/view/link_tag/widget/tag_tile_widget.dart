@@ -31,7 +31,7 @@ class TagTileWidget extends StatelessWidget {
   }) {
     return Card(
       child: SizedBox(
-        height: 80,
+        height: 100,
         child: ListTile(
           leading: Text(
             '#',
@@ -51,7 +51,7 @@ class TagTileWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(data.title),
+              Text(data.title, style: TextStyle(fontSize: 15, color: HexColor(tagColor)),),
               Row(
                 children: [
                   const Icon(

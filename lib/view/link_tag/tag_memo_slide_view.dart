@@ -36,6 +36,7 @@ class TagMemoSlideView extends HookConsumerWidget {
             update: (value) {
               //provider.update(value);
             },
+            isShowDoramaTitle: true,
           ),
         )
         .cast<Widget>()
