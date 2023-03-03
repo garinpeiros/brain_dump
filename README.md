@@ -1,16 +1,19 @@
 # brain_dump
 
-A new Flutter project.
+マンガ、映画、ドラマなど、「いいな」と思ったポイントをメモするメモアプリ。
+作品ごとにメモを登録でき、それぞれのメモの関連付けを作品をまたいでできるように実装。
 
-## Getting Started
+## Riverpod による状態管理
 
-This project is a starting point for a Flutter application.
+状態管理には
 
-A few resources to get you started if this is your first Flutter project:
+state_notifier + freezed パターンを採用。
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+https://riverpod.dev/
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Drift によるデータベース管理
+
+sqliteを扱うライブラリにはDrift(旧moor)を採用
+
+
+
