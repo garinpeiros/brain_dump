@@ -22,6 +22,31 @@ class TagMemoDatabaseNotifier extends StateNotifier<TagMemoTlStateData> {
         await _repository.fetchMemoByTag(tagId);
     state = state.copyWith(memoItems: items, isLoading: false);
   }
+
+  /*
+  ///
+  /// 更新
+  ///
+  Future<void> update(MemoData data) async {
+    state = state.copyWith(isLoading: true);
+    await _memoRepository.update(data);
+    List<MemoWithDoramaModel> items = state.memoItems;
+    int index = items.indexWhere((element) => element.memo.id == data.id);
+    items[index] = MemoWithDoramaModel(data, items[index].dorama);
+    state = state.copyWith(isLoading: false, memoItems: items);
+  }
+
+  ///
+  /// 削除
+  ///
+  Future<void> delete(MemoWithDoramaModel data) async {
+    await _memoRepository.delete(data.memo.id);
+    state = state.copyWith(isLoading: true);
+    List<MemoWithDoramaModel> items = state.memoItems;
+    items.removeWhere((element) => element.memo.id == data.memo.id);
+    state = state.copyWith(isLoading: false, memoItems: items);
+  }
+   */
 }
 
 final tagMemoDatabaseProvider = StateNotifierProvider.family
