@@ -1,6 +1,7 @@
-import 'package:brain_dump/view/dorama/dorama_list_view.dart';
+import 'package:brain_dump/view/top/top_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() async {
@@ -21,14 +22,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'NotoSerifJP-SemiBold',
         primarySwatch: Colors.blue,
       ),
-      home: DoramaListView(),
+      home: BeforeView(),
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      builder: EasyLoading.init(),
     );
   }
 }

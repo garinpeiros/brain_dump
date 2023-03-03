@@ -1,19 +1,17 @@
 import 'dart:io';
 
+import 'package:brain_dump/dao/tag_dao.dart';
+import 'package:brain_dump/dao/tag_relation_dao.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-part 'db.g.dart';
+import '../../config/constant_config.dart';
+import '../../dao/dorama_dao.dart';
+import '../../dao/memo_dao.dart';
 
-/*
-  String title;
-  int c_id;
-  int created_at;
-  int updated_at;
-  String documentId;
- */
+part 'db.g.dart';
 
 class Dorama extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -22,17 +20,6 @@ class Dorama extends Table {
   IntColumn get createdAt => integer()();
   IntColumn get updatedAt => integer()();
 }
-
-/*
-  String d_id;
-  String title;
-  String content;
-  int c_id;
-  int created_at;
-  int updated_at;
-  String documentId;
-  Future<Dorama> dorama;
- */
 
 class Memo extends Table {
   IntColumn get id => integer().autoIncrement()();
@@ -44,45 +31,69 @@ class Memo extends Table {
   IntColumn get updatedAt => integer()();
 }
 
-@DriftDatabase(tables: [Dorama, Memo])
+class LinkTag extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get title => text().withDefault(const Constant(''))();
+  IntColumn get colorId => integer()();
+  IntColumn get createdAt => integer()();
+  IntColumn get updatedAt => integer()();
+}
+
+class LinkTagRelation extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get tagId => integer()();
+  IntColumn get memoId => integer()();
+  IntColumn get createdAt => integer()();
+  IntColumn get updatedAt => integer()();
+}
+
+@DriftDatabase(tables: [
+  Dorama,
+  Memo,
+  LinkTag,
+  LinkTagRelation
+], daos: [
+  DoramaDao,
+  MemoDao,
+  TagDao,
+  TagRelationDao,
+])
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(_openConnection());
 
+  static final MyDatabase _instance = MyDatabase();
+
+  static MyDatabase getInstance() {
+    return _instance;
+  }
+
+  LazyDatabase reset() {
+    return _openConnection();
+  }
+
   @override
-  // TODO: implement schemaVersion
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
-  //全てのドラマデータを取得
-  Future<List<DoramaData>> readAllDorama() => select(dorama).get();
-
-  //追加(ドラマ)
-  Future writeDorama(DoramaCompanion data) => into(dorama).insert(data);
-
-  //更新（ドラマ）
-  Future updateDorama(DoramaData data) => update(dorama).replace(data);
-
-  //削除（ドラマ）
-  Future deleteDrama(int id) =>
-      (delete(dorama)..where((tbl) => tbl.id.equals(id))).go();
-
-  //全てのメモデータを取得
-  Future<List<MemoData>> readAllMemo() => select(memo).get();
-
-  //追加(メモ）
-  Future writeMemo(MemoCompanion data) => into(memo).insert(data);
-
-  //更新(メモ）
-  Future updateMemo(MemoData data) => update(memo).replace(data);
-
-  //削除(メモ）
-  Future deleteMemo(int id) =>
-      (delete(memo)..where((tbl) => tbl.id.equals(id))).go();
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from == 1) {
+          await m.createTable(linkTag);
+          await m.createTable(linkTagRelation);
+        }
+      },
+    );
+  }
 }
 
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, dbFileName));
     return NativeDatabase(file);
   });
 }

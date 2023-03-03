@@ -2,19 +2,26 @@ import 'package:brain_dump/model/db/db.dart';
 import 'package:brain_dump/model/select_item_model.dart';
 import 'package:brain_dump/util/tool_util.dart';
 import 'package:brain_dump/view/dorama/dorama_form_view.dart';
-import 'package:brain_dump/view/dorama/widget/dorama_delete_dialog_widget.dart';
-import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
+import 'package:brain_dump/view/memo/memo_slide_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../config/constant_config.dart';
+import '../../../widget/delete_dialog_widget.dart';
+import 'memo_gauge_widget.dart';
+
 class DoramaTileWidget extends StatelessWidget {
   final DoramaData data;
-  final DoramaDatabseNotifier provider;
+  final int count;
+  final Function delete;
+  //final DoramaDatabaseNotifier provider;
   const DoramaTileWidget({
     Key? key,
     required this.data,
-    required this.provider,
+    required this.count,
+    required this.delete,
+    //required this.provider,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -26,20 +33,48 @@ class DoramaTileWidget extends StatelessWidget {
     required BuildContext context,
   }) {
     SelectItemModel? category = ToolUtil.getDoramaCategory(data.categoryId);
+
+    Color color = (category != null) ? category.color : Colors.black;
     return Card(
-      child: ListTile(
-        leading: Chip(
-          backgroundColor: (category != null) ? category.color : Colors.black,
-          label: Text(
-            (category != null) ? category.name : '',
-            style: const TextStyle(
-              color: Colors.white,
+      child: Container(
+        height: 80,
+        child: ListTile(
+          leading: Chip(
+            backgroundColor: Colors.transparent,
+            shape: StadiumBorder(
+              side: BorderSide(
+                color: color,
+              ),
+            ),
+            label: Text(
+              (category != null) ? category.name : '',
+              style: TextStyle(
+                color: color,
+              ),
             ),
           ),
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MemoSlideView(dorama: data),
+              ),
+            );
+          },
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(data.title),
+              MemoGaugeWidget(currentCount: count, maxCount: norumaCount),
+            ],
+          ),
+          trailing: GestureDetector(
+            onTap: () => _action(context),
+            behavior: HitTestBehavior.opaque,
+            child: const Icon(Icons.more_horiz),
+          ),
         ),
-        onTap: () => _action(context),
-        title: Text(data.title),
-        trailing: const Icon(Icons.more_horiz),
       ),
     );
   }
@@ -49,10 +84,12 @@ class DoramaTileWidget extends StatelessWidget {
       context: context,
       position: _getPosition(context),
       items: <PopupMenuItem<String>>[
+        /*
         PopupMenuItem<String>(
           value: 'card',
           child: Text("card_list".tr()),
         ),
+        */
         PopupMenuItem<String>(
           value: 'edit',
           child: Text("edit".tr()),
@@ -65,8 +102,7 @@ class DoramaTileWidget extends StatelessWidget {
       elevation: 8.0,
     );
 
-    if (result == 'card') {
-    } else if (result == 'edit') {
+    if (result == 'edit') {
       await Navigator.push(
         context,
         MaterialPageRoute(
@@ -79,11 +115,11 @@ class DoramaTileWidget extends StatelessWidget {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return DoramaDeleteDialogWidget(
-            data: data,
-            action: () => {
-              provider.deleteData(data),
+          return DeleteDialogWidget(
+            action: () async {
+              await delete();
             },
+            title: "delete".tr(),
           );
         },
       );

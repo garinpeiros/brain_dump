@@ -5,9 +5,11 @@ import 'package:brain_dump/view_model/dorama/dorama_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/category_config.dart';
+import '../../config/constant_config.dart';
 
 class DoramaFormView extends HookConsumerWidget {
   final DoramaData? data;
@@ -15,7 +17,7 @@ class DoramaFormView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final doramaState = ref.watch(doramaDatabaseProvider);
+    ref.watch(doramaDatabaseProvider);
     final doramaProvider = ref.watch(doramaDatabaseProvider.notifier);
     return Scaffold(
       appBar: AppBar(
@@ -24,7 +26,7 @@ class DoramaFormView extends HookConsumerWidget {
           color: Colors.black,
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: HexColor(baseColor),
         title: Text(
           _isEdit() ? "edit_dorama".tr() : "add_dorama".tr(),
           style: const TextStyle(
@@ -33,13 +35,24 @@ class DoramaFormView extends HookConsumerWidget {
         ),
         automaticallyImplyLeading: true,
       ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'back',
+        backgroundColor: Colors.white,
+        child: const Icon(
+          Icons.arrow_back,
+          color: Colors.black54,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop(true);
+        },
+      ),
       body: _buildForm(context, doramaProvider),
     );
   }
 
   bool _isEdit() => data != null;
 
-  Widget _buildForm(BuildContext context, DoramaDatabseNotifier provider) {
+  Widget _buildForm(BuildContext context, DoramaDatabaseNotifier provider) {
     final key = GlobalKey<FormState>();
     TempDoramaData temp = TempDoramaData();
 
@@ -136,9 +149,9 @@ class DoramaFormView extends HookConsumerWidget {
                   createdAt: data!.createdAt,
                   updatedAt: DateTime.now().millisecondsSinceEpoch,
                 );
-                provider.updateData(update);
+                provider.update(update);
               } else {
-                provider.writeData(temp);
+                provider.write(temp);
               }
               Navigator.of(context).pop(true);
             }
